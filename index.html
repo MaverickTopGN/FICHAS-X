@@ -1,0 +1,1098 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Fichas X</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root {
+      --bg-body: #020617;
+      --bg-shell: #020617;
+      --bg-shell-grad: radial-gradient(circle at top left,#0f172a 0,#020617 45%,#000 100%);
+      --bg-card: #020617;
+      --border-soft: #111827;
+      --border-strong: #1f2937;
+      --text-main: #f9fafb;
+      --text-soft: #9ca3af;
+      --pill-bg: #020617;
+      --pill-border: #1f2937;
+      --accent: #22c55e;
+      --accent2: #06b6d4;
+      --accent-dark: #0f766e;
+      --tab-border: #1f2937;
+      --danger: #ef4444;
+      --danger-dark: #b91c1c;
+      --input-bg: #020617;
+      --input-border: #111827;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px 12px;
+      background: var(--bg-shell-grad);
+      color: var(--text-main);
+      font-family: system-ui,-apple-system,BlinkMacSystemFont,"Inter",sans-serif;
+    }
+
+    .shell {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: var(--bg-shell);
+      border-radius: 28px;
+      border: 1px solid #0b1120;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.75);
+      padding: 24px 28px 28px;
+    }
+
+    /* HEADER */
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 20px;
+      background: radial-gradient(circle at 0 0,#22c55e 0,#06b6d4 40%,#0f172a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand-logo-bars {
+      width: 60%;
+      height: 60%;
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+    }
+
+    .brand-logo-bars span {
+      flex: 1;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+    }
+
+    .brand-logo-bars span:nth-child(1) { height: 40%; }
+    .brand-logo-bars span:nth-child(2) { height: 75%; }
+    .brand-logo-bars span:nth-child(3) { height: 55%; }
+
+    .brand-text-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .brand-text-sub {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      margin-top: 2px;
+    }
+
+    .header-right {
+      font-size: 12px;
+      color: var(--text-soft);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    /* FILTROS SUPERIORES */
+
+    .top-filters-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .pill-select {
+      flex: 1 1 180px;
+      background: var(--pill-bg);
+      border-radius: 999px;
+      border: 1px solid var(--pill-border);
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .pill-select select {
+      width: 100%;
+      border: none;
+      background: transparent;
+      color: var(--text-main);
+      font-size: 13px;
+      outline: none;
+      appearance: none;
+    }
+
+    .pill-select::after {
+      content: "▾";
+      font-size: 11px;
+      color: var(--text-soft);
+      margin-left: 8px;
+    }
+
+    .period-label {
+      font-size: 12px;
+      color: var(--text-soft);
+      margin-left: auto;
+      margin-right: 4px;
+    }
+
+    .btn-ghost {
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--pill-border);
+      background: transparent;
+      color: var(--text-main);
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--accent2);
+      color: var(--accent2);
+    }
+
+    /* TABS */
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      padding: 8px 18px;
+      border-radius: 999px;
+      border: 1px solid var(--tab-border);
+      background: #020617;
+      color: var(--text-soft);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all .12s ease;
+    }
+
+    .tab-btn:hover {
+      border-color: var(--accent2);
+      color: var(--text-main);
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(90deg,var(--accent) 0,var(--accent2) 100%);
+      color: #0f172a;
+      border-color: transparent;
+      font-weight: 600;
+    }
+
+    hr.divider {
+      border: none;
+      border-top: 1px solid #0b1120;
+      margin: 0 0 20px;
+    }
+
+    /* CONTENIDO GENERAL */
+
+    .section {
+      border-radius: 18px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-soft);
+      padding: 18px 18px 16px;
+      margin-bottom: 16px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .section-subtitle {
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    .section-right-note {
+      font-size: 11px;
+      color: var(--text-soft);
+      text-align: right;
+    }
+
+    label {
+      font-size: 11px;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    input[type="number"],
+    input[type="text"],
+    input[type="file"] {
+      width: 100%;
+      border-radius: 999px;
+      border: 1px solid var(--input-border);
+      background: var(--input-bg);
+      color: var(--text-main);
+      font-size: 13px;
+      padding: 8px 14px;
+      outline: none;
+      margin-bottom: 10px;
+    }
+
+    input[type="file"] {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #020617;
+    }
+
+    input:focus {
+      border-color: var(--accent2);
+      box-shadow: 0 0 0 1px rgba(56,189,248,0.45);
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .col {
+      flex: 1 1 180px;
+      min-width: 0;
+    }
+
+    .btn-primary {
+      border-radius: 999px;
+      padding: 9px 18px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(90deg,var(--accent) 0,var(--accent2) 100%);
+      color: #0f172a;
+      font-weight: 600;
+      font-size: 13px;
+      box-shadow: 0 14px 36px rgba(34,197,94,0.45);
+      white-space: nowrap;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.05);
+      box-shadow: 0 18px 42px rgba(6,182,212,0.6);
+    }
+
+    .btn-secondary {
+      border-radius: 999px;
+      padding: 7px 14px;
+      border: 1px solid var(--tab-border);
+      background: transparent;
+      color: var(--text-soft);
+      font-size: 11px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent2);
+      color: var(--accent2);
+    }
+
+    .btn-delete {
+      border-radius: 999px;
+      padding: 7px 14px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(90deg,var(--danger) 0,var(--danger-dark) 100%);
+      color: #fee2e2;
+      font-size: 11px;
+      box-shadow: 0 10px 26px rgba(248,113,113,0.5);
+    }
+
+    .footer-text {
+      font-size: 11px;
+      color: var(--text-soft);
+      text-align: right;
+      margin-top: 8px;
+    }
+
+    /* RESUMEN / LISTA */
+
+    .summary-title {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      margin-bottom: 4px;
+    }
+
+    .summary-amount {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .summary-sub {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .records-list {
+      margin-top: 14px;
+      border-top: 1px solid #0b1120;
+      padding-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+      gap: 12px;
+    }
+
+    .record-item {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 12px 12px 10px;
+      border-radius: 18px;
+      background: #020617;
+      border: 1px solid #0b1120;
+      box-shadow: 0 14px 30px rgba(0,0,0,0.7);
+    }
+
+    .record-thumb {
+      width: 160px;
+      height: 160px;
+      border-radius: 18px;
+      background: #020617;
+      border: 1px solid #111827;
+      object-fit: cover;
+      flex-shrink: 0;
+      cursor: zoom-in;
+      align-self: center;
+    }
+
+    .record-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .record-line1 {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    .record-line2 {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .record-line3 {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .record-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .empty-text {
+      font-size: 11px;
+      color: var(--text-soft);
+      margin-top: 4px;
+    }
+
+    /* PANEL GENERAL */
+
+    .panel-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+      gap: 10px;
+    }
+
+    .panel-card {
+      border-radius: 18px;
+      background: #020617;
+      border: 1px solid #0b1120;
+      padding: 12px 14px;
+    }
+
+    .panel-card-title {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      margin-bottom: 4px;
+    }
+
+    .panel-card-amount {
+      font-size: 17px;
+      font-weight: 600;
+    }
+
+    .panel-card-sub {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    /* MODAL IMAGEN */
+
+    .image-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,0.92);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .image-modal.active {
+      display: flex;
+    }
+
+    .image-modal-inner {
+      max-width: 90vw;
+      max-height: 90vh;
+      padding: 16px 18px 12px;
+      background: #020617;
+      border-radius: 18px;
+      border: 1px solid #1f2937;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.85);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .image-modal-inner img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 16px;
+      border: 1px solid #111827;
+      object-fit: contain;
+    }
+
+    .image-modal-caption {
+      font-size: 12px;
+      color: var(--text-soft);
+      text-align: center;
+    }
+
+    .image-modal-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .image-modal-close {
+      position: absolute;
+      top: 16px;
+      right: 18px;
+      border-radius: 999px;
+      border: 1px solid #1f2937;
+      background: rgba(15,23,42,0.8);
+      color: #e5e7eb;
+      font-size: 12px;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .shell { padding: 18px 16px 20px; }
+      .header { flex-direction: column; align-items: flex-start; }
+      .top-filters-row { align-items: stretch; }
+      .period-label { margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <!-- HEADER -->
+    <header class="header">
+      <div class="brand">
+        <div class="brand-logo">
+          <div class="brand-logo-bars">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+        <div>
+          <div class="brand-text-title">Fichas X</div>
+          <div class="brand-text-sub">Control de fichas entregadas</div>
+        </div>
+      </div>
+      <div class="header-right">
+        NT · JOSUE · LS
+      </div>
+    </header>
+
+    <!-- FILTROS SUPERIORES -->
+    <div class="top-filters-row">
+      <div class="pill-select">
+        <select id="filterMonth"></select>
+      </div>
+      <div class="pill-select">
+        <select id="filterYear"></select>
+      </div>
+      <span class="period-label">Periodo:</span>
+      <button class="btn-ghost" id="btnVerTodo">Ver todo</button>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="panel">Panel general</button>
+      <button class="tab-btn" data-tab="NT">NT</button>
+      <button class="tab-btn" data-tab="JOSUE">JOSUE</button>
+      <button class="tab-btn" data-tab="LS">LS</button>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- SECCIÓN AGREGAR (solo para tabs de persona) -->
+    <section class="section" id="sectionAdd">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Agregar nueva ficha</div>
+          <div class="section-subtitle">Registra quién entregó, cuánto, folio, cuenta y la imagen de la ficha.</div>
+        </div>
+        <div class="section-right-note">
+          Se guardará en la pestaña actual (<span id="currentPersonaLabel">NT</span>).
+        </div>
+      </div>
+
+      <form id="formFicha">
+        <div class="row">
+          <div class="col">
+            <label for="personaInput">Persona que entrega</label>
+            <input id="personaInput" type="text" disabled value="NT" />
+          </div>
+          <div class="col">
+            <label for="montoInput">Monto entregado (MXN)</label>
+            <input id="montoInput" type="number" min="0" step="0.01" placeholder="Ej. 400000" required />
+          </div>
+          <div class="col">
+            <label for="descripcionInput">Descripción (opcional)</label>
+            <input id="descripcionInput" type="text" placeholder="Ej. Josue $400,000.00" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label for="folioInput">Folio</label>
+            <input id="folioInput" type="text" placeholder="Ej. 000123" />
+          </div>
+          <div class="col">
+            <label for="cuentaInput">Cuenta</label>
+            <input id="cuentaInput" type="text" placeholder="Ej. 123-456-789" />
+          </div>
+        </div>
+
+        <div class="row" style="align-items:center;">
+          <div class="col">
+            <label for="imageInput">Imagen de la ficha</label>
+            <input id="imageInput" type="file" accept="image/*" />
+          </div>
+          <div class="col" style="display:flex;justify-content:flex-end;align-items:flex-end;">
+            <button type="submit" class="btn-primary">Guardar ficha</button>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <!-- SECCIÓN RESUMEN PERSONA -->
+    <section class="section" id="sectionPersona">
+      <div class="section-header">
+        <div>
+          <div class="summary-title" id="personaResumenTitulo">RESUMEN NT</div>
+          <div class="summary-amount" id="personaResumenMonto">$0.00</div>
+          <div class="summary-sub" id="personaResumenSub">0 fichas registradas</div>
+        </div>
+      </div>
+
+      <div class="records-list" id="recordsList"></div>
+      <div class="empty-text" id="emptyPersona">No hay fichas registradas para esta persona y periodo.</div>
+    </section>
+
+    <!-- PANEL GENERAL -->
+    <section class="section" id="sectionPanel" style="display:none;">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Panel general</div>
+          <div class="section-subtitle">
+            Totales por persona según los filtros de mes y año seleccionados.
+          </div>
+        </div>
+      </div>
+      <div class="panel-grid">
+        <div class="panel-card">
+          <div class="panel-card-title">Total general</div>
+          <div class="panel-card-amount" id="panelTotalGeneral">$0.00</div>
+          <div class="panel-card-sub" id="panelTotalGeneralSub">0 fichas registradas</div>
+        </div>
+        <div class="panel-card">
+          <div class="panel-card-title">Total NT</div>
+          <div class="panel-card-amount" id="panelTotalNT">$0.00</div>
+          <div class="panel-card-sub" id="panelTotalNTSub">0 fichas</div>
+        </div>
+        <div class="panel-card">
+          <div class="panel-card-title">Total JOSUE</div>
+          <div class="panel-card-amount" id="panelTotalJOSUE">$0.00</div>
+          <div class="panel-card-sub" id="panelTotalJOSUESub">0 fichas</div>
+        </div>
+        <div class="panel-card">
+          <div class="panel-card-title">Total LS</div>
+          <div class="panel-card-amount" id="panelTotalLS">$0.00</div>
+          <div class="panel-card-sub" id="panelTotalLSSub">0 fichas</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer-text">
+      Fichas X · Datos guardados en tu navegador (localStorage)
+    </div>
+  </div>
+
+  <!-- MODAL PARA VER IMAGEN GRANDE -->
+  <div class="image-modal" id="imageModal">
+    <button class="image-modal-close" id="imageModalClose">Cerrar ✕</button>
+    <div class="image-modal-inner">
+      <img id="imageModalImg" src="" alt="Ficha ampliada" />
+      <div class="image-modal-caption" id="imageModalCaption"></div>
+      <div class="image-modal-actions">
+        <a id="imageModalDownload" class="btn-secondary" href="#" download>Descargar imagen</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "fichasXRecords";
+    const monthNames = [
+      "Enero","Febrero","Marzo","Abril","Mayo","Junio",
+      "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"
+    ];
+
+    let records = [];
+    let currentTab = "NT"; // panel | NT | JOSUE | LS
+
+    function loadFromStorage() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) { records = []; return; }
+        const parsed = JSON.parse(raw);
+        records = (Array.isArray(parsed) ? parsed : []).map(r => {
+          const rec = { ...r };
+          if (!rec.year || !rec.month) {
+            if (rec.monthKey) {
+              const [y,m] = rec.monthKey.split("-");
+              rec.year = parseInt(y,10);
+              rec.month = parseInt(m,10);
+            } else if (rec.createdAt) {
+              const d = new Date(rec.createdAt);
+              if (!isNaN(d)) {
+                rec.year = d.getFullYear();
+                rec.month = d.getMonth()+1;
+              }
+            } else {
+              const d = new Date();
+              rec.year = d.getFullYear();
+              rec.month = d.getMonth()+1;
+            }
+          }
+          return rec;
+        });
+      } catch(e) {
+        console.error(e);
+        records = [];
+      }
+    }
+
+    function saveToStorage() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+    }
+
+    function formatMoney(v) {
+      return v.toLocaleString("es-MX",{minimumFractionDigits:2,maximumFractionDigits:2});
+    }
+
+    function buildFilters() {
+      const selMonth = document.getElementById("filterMonth");
+      const selYear = document.getElementById("filterYear");
+      selMonth.innerHTML = "";
+      selYear.innerHTML = "";
+
+      const optAllM = document.createElement("option");
+      optAllM.value = "all";
+      optAllM.textContent = "Todos los meses";
+      selMonth.appendChild(optAllM);
+
+      for (let i=0;i<12;i++) {
+        const opt = document.createElement("option");
+        opt.value = (i+1).toString();
+        opt.textContent = monthNames[i];
+        selMonth.appendChild(opt);
+      }
+
+      const currentYear = new Date().getFullYear();
+      const optAllY = document.createElement("option");
+      optAllY.value = "all";
+      optAllY.textContent = "Todos los años";
+      selYear.appendChild(optAllY);
+
+      for (let y=currentYear-1;y<=currentYear+1;y++) {
+        const opt = document.createElement("option");
+        opt.value = y.toString();
+        opt.textContent = y.toString();
+        selYear.appendChild(opt);
+      }
+
+      selMonth.value = "all";
+      selYear.value = "all";
+    }
+
+    function getFilterValues() {
+      const m = document.getElementById("filterMonth").value;
+      const y = document.getElementById("filterYear").value;
+      return { month: m === "all" ? null : parseInt(m,10),
+               year: y === "all" ? null : parseInt(y,10) };
+    }
+
+    function filteredRecords() {
+      const {month,year} = getFilterValues();
+      return records.filter(r => {
+        if (month && r.month !== month) return false;
+        if (year && r.year !== year) return false;
+        return true;
+      });
+    }
+
+    function render() {
+      const allFiltered = filteredRecords();
+
+      renderPanel(allFiltered);
+
+      if (currentTab === "panel") {
+        document.getElementById("sectionPanel").style.display = "block";
+        document.getElementById("sectionAdd").style.display = "none";
+        document.getElementById("sectionPersona").style.display = "none";
+      } else {
+        document.getElementById("sectionPanel").style.display = "none";
+        document.getElementById("sectionAdd").style.display = "block";
+        document.getElementById("sectionPersona").style.display = "block";
+        renderPersona(allFiltered, currentTab);
+      }
+
+      document.getElementById("currentPersonaLabel").textContent = currentTab === "panel" ? "--" : currentTab;
+      document.getElementById("personaInput").value = currentTab === "panel" ? "" : currentTab;
+      document.getElementById("personaInput").disabled = true;
+    }
+
+    function renderPanel(allFiltered) {
+      const personas = ["NT","JOSUE","LS"];
+
+      const totalGeneral = allFiltered.reduce((s,r)=>s+r.amount,0);
+      const totalCount = allFiltered.length;
+
+      document.getElementById("panelTotalGeneral").textContent = "$"+formatMoney(totalGeneral);
+      document.getElementById("panelTotalGeneralSub").textContent = `${totalCount} ficha${totalCount===1?"":"s"} registradas`;
+
+      personas.forEach(p => {
+        const list = allFiltered.filter(r=>r.persona===p);
+        const sum = list.reduce((s,r)=>s+r.amount,0);
+        const elAmount = document.getElementById("panelTotal"+p);
+        const elSub = document.getElementById("panelTotal"+p+"Sub");
+        if (elAmount) elAmount.textContent = "$"+formatMoney(sum);
+        if (elSub) elSub.textContent = `${list.length} ficha${list.length===1?"":"s"}`;
+      });
+    }
+
+    function renderPersona(allFiltered, persona) {
+      const list = allFiltered.filter(r=>r.persona===persona);
+      const total = list.reduce((s,r)=>s+r.amount,0);
+
+      document.getElementById("personaResumenTitulo").textContent = "RESUMEN "+persona;
+      document.getElementById("personaResumenMonto").textContent = "$"+formatMoney(total);
+      document.getElementById("personaResumenSub").textContent =
+        `${list.length} ficha${list.length===1?"":"s"} registradas`;
+
+      const listContainer = document.getElementById("recordsList");
+      const empty = document.getElementById("emptyPersona");
+      listContainer.innerHTML = "";
+
+      if (list.length === 0) {
+        empty.style.display = "block";
+        return;
+      }
+      empty.style.display = "none";
+
+      list
+        .slice()
+        .sort((a,b)=>b.createdAt.localeCompare(a.createdAt))
+        .forEach(rec => {
+          const row = document.createElement("div");
+          row.className = "record-item";
+
+          // Imagen o placeholder, clicable para abrir modal
+          if (rec.imageDataUrl) {
+            const img = document.createElement("img");
+            img.className = "record-thumb";
+            img.src = rec.imageDataUrl;
+            img.alt = rec.descripcion || "Ficha";
+            img.onclick = () => openImageModal(rec);
+            row.appendChild(img);
+          } else {
+            const placeholder = document.createElement("div");
+            placeholder.className = "record-thumb";
+            placeholder.style.display = "flex";
+            placeholder.style.alignItems = "center";
+            placeholder.style.justifyContent = "center";
+            placeholder.style.fontSize = "10px";
+            placeholder.style.color = "#4b5563";
+            placeholder.style.cursor = "default";
+            placeholder.textContent = "SIN IMAGEN";
+            row.appendChild(placeholder);
+          }
+
+          // Info debajo de la imagen
+          const info = document.createElement("div");
+          info.className = "record-info";
+
+          const line1 = document.createElement("div");
+          line1.className = "record-line1";
+          line1.textContent = "$"+formatMoney(rec.amount);
+          info.appendChild(line1);
+
+          const line2 = document.createElement("div");
+          line2.className = "record-line2";
+          const dateStr = rec.createdAt ? new Date(rec.createdAt).toLocaleDateString("es-MX") : "";
+          const desc = rec.descripcion ? " · "+rec.descripcion : "";
+          line2.textContent = `${dateStr}${desc}`;
+          info.appendChild(line2);
+
+          if (rec.folio || rec.cuenta) {
+            const line3 = document.createElement("div");
+            line3.className = "record-line3";
+            const parts = [];
+            if (rec.folio) parts.push("Folio: " + rec.folio);
+            if (rec.cuenta) parts.push("Cuenta: " + rec.cuenta);
+            line3.textContent = parts.join(" · ");
+            info.appendChild(line3);
+          }
+
+          row.appendChild(info);
+
+          // Acciones
+          const actions = document.createElement("div");
+          actions.className = "record-actions";
+
+          if (rec.imageDataUrl) {
+            const dl = document.createElement("a");
+            dl.className = "btn-secondary";
+            dl.textContent = "Descargar";
+            dl.href = rec.imageDataUrl;
+            dl.download = `ficha-${rec.persona}-${rec.id}.png`;
+            actions.appendChild(dl);
+          }
+
+          const bEdit = document.createElement("button");
+          bEdit.className = "btn-secondary";
+          bEdit.textContent = "Editar";
+          bEdit.onclick = () => editRecord(rec.id);
+
+          const bDel = document.createElement("button");
+          bDel.className = "btn-delete";
+          bDel.textContent = "Eliminar";
+          bDel.onclick = () => deleteRecord(rec.id);
+
+          actions.appendChild(bEdit);
+          actions.appendChild(bDel);
+
+          row.appendChild(actions);
+
+          listContainer.appendChild(row);
+        });
+    }
+
+    function deleteRecord(id) {
+      if (!confirm("¿Seguro que deseas eliminar esta ficha?")) return;
+      records = records.filter(r=>r.id!==id);
+      saveToStorage();
+      render();
+    }
+
+    // EDITAR: monto, descripción, folio y cuenta
+    function editRecord(id) {
+      const rec = records.find(r => r.id === id);
+      if (!rec) return;
+
+      const newAmountStr = prompt("Nuevo monto:", rec.amount.toString());
+      if (newAmountStr === null) return;
+      const newAmount = parseFloat(newAmountStr);
+      if (isNaN(newAmount) || newAmount < 0) {
+        alert("Monto inválido.");
+        return;
+      }
+
+      const newDesc = prompt("Nueva descripción (puede quedar vacía):", rec.descripcion || "");
+      if (newDesc === null) return;
+
+      const newFolio = prompt("Nuevo folio (puede quedar vacío):", rec.folio || "");
+      if (newFolio === null) return;
+
+      const newCuenta = prompt("Nueva cuenta (puede quedar vacía):", rec.cuenta || "");
+      if (newCuenta === null) return;
+
+      rec.amount = newAmount;
+      rec.descripcion = (newDesc || "").trim();
+      rec.folio = (newFolio || "").trim();
+      rec.cuenta = (newCuenta || "").trim();
+
+      saveToStorage();
+      render();
+    }
+
+    // ---- MODAL DE IMAGEN ----
+
+    const imageModal = document.getElementById("imageModal");
+    const imageModalImg = document.getElementById("imageModalImg");
+    const imageModalCaption = document.getElementById("imageModalCaption");
+    const imageModalDownload = document.getElementById("imageModalDownload");
+    const imageModalClose = document.getElementById("imageModalClose");
+
+    function openImageModal(rec) {
+      if (!rec.imageDataUrl) return;
+      imageModalImg.src = rec.imageDataUrl;
+      const dateStr = rec.createdAt ? new Date(rec.createdAt).toLocaleDateString("es-MX") : "";
+      let caption = `${rec.persona} · ${dateStr}`;
+      if (rec.descripcion) caption += " · " + rec.descripcion;
+      const extra = [];
+      if (rec.folio) extra.push("Folio: " + rec.folio);
+      if (rec.cuenta) extra.push("Cuenta: " + rec.cuenta);
+      if (extra.length) caption += " · " + extra.join(" · ");
+      imageModalCaption.textContent = caption;
+      imageModalDownload.href = rec.imageDataUrl;
+      imageModalDownload.download = `ficha-${rec.persona}-${rec.id}.png`;
+      imageModal.classList.add("active");
+    }
+
+    imageModalClose.addEventListener("click", () => {
+      imageModal.classList.remove("active");
+      imageModalImg.src = "";
+    });
+
+    imageModal.addEventListener("click", (e) => {
+      if (e.target === imageModal) {
+        imageModal.classList.remove("active");
+        imageModalImg.src = "";
+      }
+    });
+
+    // ---- EVENTOS GENERALES ----
+
+    document.getElementById("btnVerTodo").addEventListener("click", () => {
+      document.getElementById("filterMonth").value = "all";
+      document.getElementById("filterYear").value = "all";
+      render();
+    });
+
+    document.getElementById("filterMonth").addEventListener("change", render);
+    document.getElementById("filterYear").addEventListener("change", render);
+
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+        currentTab = btn.getAttribute("data-tab");
+        render();
+      });
+    });
+
+    document.getElementById("formFicha").addEventListener("submit", e => {
+      e.preventDefault();
+      if (currentTab === "panel") {
+        alert("Selecciona NT, JOSUE o LS para registrar una ficha.");
+        return;
+      }
+
+      const monto = parseFloat(document.getElementById("montoInput").value);
+      if (isNaN(monto) || monto <= 0) {
+        alert("Ingresa un monto válido.");
+        return;
+      }
+      const descripcion = document.getElementById("descripcionInput").value.trim();
+      const folio = document.getElementById("folioInput").value.trim();
+      const cuenta = document.getElementById("cuentaInput").value.trim();
+      const fileInput = document.getElementById("imageInput");
+      const now = new Date();
+
+      const baseRecord = {
+        id: Date.now()+"_"+Math.random().toString(16).slice(2),
+        persona: currentTab,
+        amount: monto,
+        descripcion,
+        folio,
+        cuenta,
+        year: now.getFullYear(),
+        month: now.getMonth()+1,
+        imageDataUrl: null,
+        createdAt: now.toISOString()
+      };
+
+      const finish = () => {
+        records.push(baseRecord);
+        saveToStorage();
+        document.getElementById("formFicha").reset();
+        render();
+      };
+
+      if (fileInput.files && fileInput.files.length>0) {
+        const reader = new FileReader();
+        reader.onload = ev => {
+          baseRecord.imageDataUrl = ev.target.result;
+          finish();
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+      } else {
+        finish();
+      }
+    });
+
+    // init
+    loadFromStorage();
+    buildFilters();
+    render();
+  </script>
+</body>
+</html>
