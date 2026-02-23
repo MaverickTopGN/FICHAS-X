@@ -5,6 +5,11 @@
   <title>Fichas X</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- Roboto -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+
   <!-- Font Awesome (solid + brands) -->
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -31,12 +36,10 @@
       --green-ink:#041006;
 
       --danger:#ff3b30;
-      --warn:#ffcc00;
 
       --radius-xl: 26px;
       --radius-lg: 18px;
       --radius-md: 14px;
-      --radius-sm: 12px;
 
       --grid-gap: 14px;
       --maxw: 1200px;
@@ -46,7 +49,7 @@
     html,body{height:100%}
     body{
       margin:0;
-      font-family: system-ui,-apple-system,BlinkMacSystemFont,"Inter",sans-serif;
+      font-family: "Roboto", system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
       color:var(--ink);
       background:
         radial-gradient(1200px 800px at 15% 10%, rgba(57,255,20,0.12), rgba(0,0,0,0) 60%),
@@ -70,7 +73,6 @@
       position: relative;
     }
 
-    /* Subtle inner glow */
     .shell::before{
       content:"";
       position:absolute; inset:0;
@@ -122,7 +124,7 @@
       font-size: 16px;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      font-weight: 800;
+      font-weight: 900;
     }
     .brand p{
       margin:4px 0 0;
@@ -130,7 +132,7 @@
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--muted-2);
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .top-actions{
@@ -154,7 +156,7 @@
       -webkit-backdrop-filter: blur(16px);
       font-size: 12px;
       color: var(--muted);
-      font-weight: 700;
+      font-weight: 900;
     }
 
     .btn{
@@ -172,7 +174,6 @@
       text-decoration:none;
       white-space: nowrap;
     }
-
     .btn:active{ transform: translateY(1px) }
 
     .btn-primary{
@@ -238,7 +239,6 @@
       z-index: 1;
     }
 
-    /* Grid layout */
     .content{
       display:grid;
       gap: var(--grid-gap);
@@ -279,7 +279,6 @@
       font-weight: 700;
     }
 
-    /* Stat tiles */
     .stats{
       display:grid;
       grid-template-columns: repeat(3, minmax(0,1fr));
@@ -298,7 +297,7 @@
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--muted-2);
-      font-weight: 800;
+      font-weight: 900;
       display:flex;
       align-items:center;
       gap:8px;
@@ -306,7 +305,7 @@
     .stat-value{
       margin-top: 8px;
       font-size: 22px;
-      font-weight: 1000;
+      font-weight: 900;
       letter-spacing: -0.02em;
       color: rgba(10,10,15,0.92);
     }
@@ -357,7 +356,7 @@
     /* Record cards */
     .records-grid{
       display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
       gap: 12px;
       margin-top: 12px;
     }
@@ -391,7 +390,7 @@
       background: rgba(57,255,20,0.22);
       border: 1px solid rgba(57,255,20,0.35);
       color: rgba(10,10,15,0.88);
-      font-weight: 1000;
+      font-weight: 900;
       font-size: 12px;
       letter-spacing: 0.04em;
       text-transform: uppercase;
@@ -400,7 +399,7 @@
 
     .money{
       font-size: 18px;
-      font-weight: 1000;
+      font-weight: 900;
       color: rgba(10,10,15,0.92);
       letter-spacing: -0.02em;
     }
@@ -424,7 +423,7 @@
     .desc{
       font-size: 13px;
       color: rgba(10,10,15,0.85);
-      font-weight: 750;
+      font-weight: 700;
       line-height: 1.35;
       margin-top: 2px;
       min-height: 20px;
@@ -439,11 +438,12 @@
       margin-top: 2px;
     }
 
+    /* Image hidden row with blur preview */
     .img-hidden{
       border-radius: 16px;
       background: rgba(255,255,255,0.20);
       border: 1px dashed rgba(255,255,255,0.45);
-      padding: 14px;
+      padding: 12px;
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -453,14 +453,136 @@
     .img-hidden .left{
       display:flex;
       align-items:center;
-      gap: 10px;
+      gap: 12px;
       color: var(--muted);
       font-weight: 900;
       font-size: 12px;
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }
-    .img-hidden i{ color: rgba(10,10,15,0.72); }
+
+    .blur-preview{
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.45);
+      background: rgba(255,255,255,0.18);
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+      box-shadow: 0 12px 26px rgba(0,0,0,0.10);
+    }
+
+    .blur-preview::before{
+      content:"";
+      position:absolute;
+      inset:-10px;
+      background-size: cover;
+      background-position: center;
+      filter: blur(10px) saturate(1.08);
+      transform: scale(1.12);
+      opacity: 0.95;
+    }
+
+    .blur-preview::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.25), rgba(255,255,255,0) 60%);
+      mix-blend-mode: overlay;
+      opacity: 0.6;
+    }
+
+    .blur-preview.noimg{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color: rgba(10,10,15,0.55);
+      font-weight: 900;
+      font-size: 11px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+    }
+    .blur-preview.noimg::before{ display:none; }
+
+    /* Accordion por mes (anti-amontonado) */
+    .month-acc {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .month-item {
+      border-radius: 18px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.40);
+      box-shadow: 0 16px 44px rgba(0,0,0,0.10);
+      overflow: hidden;
+    }
+
+    .month-header {
+      width: 100%;
+      background: rgba(255,255,255,0.14);
+      border: none;
+      cursor: pointer;
+      padding: 14px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .month-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(10,10,15,0.88);
+      font-size: 12px;
+    }
+
+    .month-right {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .month-chip {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.20);
+      border: 1px solid rgba(255,255,255,0.35);
+      color: var(--muted-2);
+      font-weight: 900;
+      font-size: 12px;
+    }
+
+    .month-body {
+      display: none;
+      padding: 14px;
+      border-top: 1px solid rgba(255,255,255,0.35);
+    }
+
+    .month-item.open .month-body { display: block; }
+
+    .month-chevron {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.20);
+      border: 1px solid rgba(255,255,255,0.35);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color: rgba(10,10,15,0.75);
+      flex-shrink: 0;
+    }
+
+    .month-item.open .month-chevron i { transform: rotate(180deg); }
+    .month-chevron i { transition: transform .12s ease; }
 
     /* Calendar */
     .calendar-top{
@@ -505,7 +627,7 @@
       background: rgba(255,255,255,0.14);
       border: 1px solid rgba(255,255,255,0.35);
       color: rgba(10,10,15,0.78);
-      font-weight: 1000;
+      font-weight: 900;
       letter-spacing: 0.10em;
       text-transform: uppercase;
       font-size: 12px;
@@ -532,7 +654,7 @@
     }
 
     .day-num{
-      font-weight: 1000;
+      font-weight: 900;
       color: rgba(10,10,15,0.82);
       font-size: 14px;
     }
@@ -547,7 +669,7 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      font-weight: 1000;
+      font-weight: 900;
       background: rgba(10,10,15,0.07);
       border: 1px solid rgba(255,255,255,0.40);
       color: rgba(10,10,15,0.78);
@@ -599,7 +721,7 @@
       font-size: 14px;
       letter-spacing: 0.10em;
       text-transform: uppercase;
-      font-weight: 1000;
+      font-weight: 900;
       color: rgba(10,10,15,0.90);
     }
     .modal-close{
@@ -608,7 +730,7 @@
       border-radius: 999px;
       padding: 10px 12px;
       cursor: pointer;
-      font-weight: 1000;
+      font-weight: 900;
       display:flex;
       align-items:center;
       gap:10px;
@@ -639,7 +761,6 @@
       margin-top: 12px;
     }
 
-    /* Day list inside modal */
     .day-items{
       display:grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -777,7 +898,7 @@
             <div class="stat-value" id="statTotalAmount">$0.00</div>
           </div>
           <div class="stat">
-            <div class="stat-label"><i class="fa-solid fa-bolt"></i> Periodo (vista)</div>
+            <div class="stat-label"><i class="fa-solid fa-bolt"></i> Periodo (filtro)</div>
             <div class="stat-value" id="statPeriod">Todo</div>
           </div>
         </div>
@@ -785,7 +906,7 @@
         <div style="display:grid;grid-template-columns: 1.2fr 0.8fr; gap: 12px; align-items:stretch;">
           <div class="glass-card" style="padding:14px;">
             <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;">
-              <div style="font-weight:1000;letter-spacing:0.10em;text-transform:uppercase;font-size:12px;color:rgba(10,10,15,0.78);">
+              <div style="font-weight:900;letter-spacing:0.10em;text-transform:uppercase;font-size:12px;color:rgba(10,10,15,0.78);">
                 Pastel por persona
               </div>
               <div class="pill" style="padding:8px 12px;">
@@ -797,26 +918,26 @@
           </div>
 
           <div class="glass-card" style="padding:14px;">
-            <div style="font-weight:1000;letter-spacing:0.10em;text-transform:uppercase;font-size:12px;color:rgba(10,10,15,0.78);margin-bottom:10px;">
+            <div style="font-weight:900;letter-spacing:0.10em;text-transform:uppercase;font-size:12px;color:rgba(10,10,15,0.78);margin-bottom:10px;">
               Resumen rápido
             </div>
 
             <div style="display:grid; gap:10px;">
               <div class="pill" style="justify-content:space-between;">
-                <span style="font-weight:1000"><i class="fa-solid fa-user"></i> NT</span>
-                <span id="sumNT" style="font-weight:1000">0</span>
+                <span style="font-weight:900"><i class="fa-solid fa-user"></i> NT</span>
+                <span id="sumNT" style="font-weight:900">0</span>
               </div>
               <div class="pill" style="justify-content:space-between;">
-                <span style="font-weight:1000"><i class="fa-solid fa-user"></i> JOSUE</span>
-                <span id="sumJOSUE" style="font-weight:1000">0</span>
+                <span style="font-weight:900"><i class="fa-solid fa-user"></i> JOSUE</span>
+                <span id="sumJOSUE" style="font-weight:900">0</span>
               </div>
               <div class="pill" style="justify-content:space-between;">
-                <span style="font-weight:1000"><i class="fa-solid fa-user"></i> LS</span>
-                <span id="sumLS" style="font-weight:1000">0</span>
+                <span style="font-weight:900"><i class="fa-solid fa-user"></i> LS</span>
+                <span id="sumLS" style="font-weight:900">0</span>
               </div>
 
               <div class="hint">
-                Tip: Cambia el mes en Calendario para ver el periodo; el dashboard refleja el mismo periodo seleccionado.
+                Tip: usa el filtro de mes en Registros para ver periodos; el Dashboard refleja ese filtro.
               </div>
             </div>
           </div>
@@ -828,11 +949,11 @@
         <div class="card-head">
           <div>
             <h2 class="card-title">Registros</h2>
-            <p class="card-sub">Sube fichas y consulta el historial (imágenes ocultas hasta que las abras).</p>
+            <p class="card-sub">Ahora por mes (accordion). Imagen se ve solo como preview blur hasta que la abras.</p>
           </div>
           <div class="pill">
-            <i class="fa-solid fa-lock"></i>
-            Imágenes colapsadas
+            <i class="fa-solid fa-layer-group"></i>
+            Agrupado por mes
           </div>
         </div>
 
@@ -869,21 +990,21 @@
               <input id="image" type="file" accept="image/*">
             </div>
 
-            <div class="field w2" style="grid-column: span 2;">
+            <div class="field" style="grid-column: span 2;">
               <button class="btn btn-primary" type="submit" style="width:100%; justify-content:center;">
                 <i class="fa-solid fa-floppy-disk"></i> Guardar
               </button>
             </div>
           </div>
           <div class="hint">
-            * La imagen se guarda en la BD como base64 (por ahora). Si quieres, luego migramos a Supabase Storage para hacerlo más ligero y pro.
+            * La imagen sigue en base64 por ahora. Si quieres, migramos a Supabase Storage para ultra-performance.
           </div>
         </form>
 
         <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:14px;">
           <div class="pill">
             <i class="fa-solid fa-filter"></i>
-            Filtro (para dashboard + calendario):
+            Filtro global (Dashboard + Registros + Calendario):
           </div>
           <div style="display:flex;gap:10px;flex-wrap:wrap;">
             <div class="pill">
@@ -896,7 +1017,7 @@
           </div>
         </div>
 
-        <div class="records-grid" id="recordsGrid"></div>
+        <div id="recordsAccordion"></div>
         <div class="hint" id="recordsEmpty" style="display:none;">
           No hay registros para este periodo.
         </div>
@@ -907,7 +1028,7 @@
         <div class="card-head">
           <div>
             <h2 class="card-title">Eventos por día (Calendario)</h2>
-            <p class="card-sub">Agrupa fichas por día. Click en un día para ver imágenes + descripción + descargar.</p>
+            <p class="card-sub">Agrupa fichas por día. Click para ver imágenes + descripción + descargar.</p>
           </div>
           <div class="pill">
             <i class="fa-solid fa-wand-magic-sparkles"></i>
@@ -948,12 +1069,12 @@
     </div>
 
     <div class="footer">
-      <div>Fichas X · Liquid Glass UI · Font Awesome</div>
+      <div>Fichas X · Liquid Glass UI · Roboto · Font Awesome</div>
       <div id="footStatus">Conectando…</div>
     </div>
   </div>
 
-  <!-- MODAL IMAGEN / DETALLE -->
+  <!-- MODAL -->
   <div class="modal" id="modal">
     <div class="modal-card">
       <div class="modal-top">
@@ -965,7 +1086,6 @@
           <i class="fa-solid fa-xmark"></i> Cerrar
         </button>
       </div>
-
       <div id="modalBody"></div>
     </div>
   </div>
@@ -1013,7 +1133,6 @@
     }
 
     function toISODate(d){
-      // yyyy-mm-dd in local time
       const y = d.getFullYear();
       const m = String(d.getMonth()+1).padStart(2,"0");
       const day = String(d.getDate()).padStart(2,"0");
@@ -1021,7 +1140,6 @@
     }
 
     function parseMonthStr(ms){
-      // "yyyy-mm" -> {y,m}
       const [y,m] = ms.split("-").map(x=>parseInt(x,10));
       return { y, m };
     }
@@ -1029,7 +1147,6 @@
     function withinGlobalMonth(rec){
       if (!globalMonth) return true;
       const { y, m } = parseMonthStr(globalMonth);
-      // rec.year & rec.month exist; also created_at exists
       if (rec.year && rec.month) return rec.year === y && rec.month === m;
       const d = new Date(rec.created_at);
       return d.getFullYear() === y && (d.getMonth()+1) === m;
@@ -1071,7 +1188,7 @@
     function applyFilterAndRender(){
       filtered = allRecords.filter(withinGlobalMonth);
       renderDashboard();
-      renderRecords();
+      renderRecords();     // ahora accordion por mes
       renderCalendar();
     }
 
@@ -1080,11 +1197,9 @@
     // ------------------------
     function setTab(tab){
       activeTab = tab;
-
       document.querySelectorAll(".tab").forEach(b=>{
         b.classList.toggle("active", b.dataset.tab === tab);
       });
-
       $("viewDashboard").style.display = (tab==="dashboard") ? "block" : "none";
       $("viewRecords").style.display   = (tab==="records") ? "block" : "none";
       $("viewCalendar").style.display  = (tab==="calendar") ? "block" : "none";
@@ -1100,7 +1215,6 @@
     function setGlobalMonth(value){
       globalMonth = value || null;
       $("statPeriod").textContent = globalMonth ? globalMonth : "Todo";
-      // keep calendar month aligned with global by default
       if (globalMonth){
         calendarMonth = globalMonth;
         $("calendarMonth").value = calendarMonth;
@@ -1118,11 +1232,9 @@
       toast("Mostrando todo");
     });
 
-    // Calendar month separate (but defaulted to global)
     $("calendarMonth").addEventListener("change", (e)=>{
       calendarMonth = e.target.value || globalMonth || currentMonthStr();
-      renderCalendar(); // only calendar changes
-      renderDashboard(); // also update stats period label & distribution if you want month to drive
+      renderCalendar();
     });
 
     function currentMonthStr(){
@@ -1146,9 +1258,7 @@
     }
 
     function renderDashboard(){
-      // Dashboard reflects GLOBAL month filter (not calendar picker if they diverge)
       const list = filtered;
-
       const counts = countByPersona(list);
       const totalCount = list.length;
       const totalAmount = sumAmount(list);
@@ -1159,7 +1269,6 @@
       $("sumJOSUE").textContent = counts.JOSUE.toLocaleString("es-MX");
       $("sumLS").textContent = counts.LS.toLocaleString("es-MX");
 
-      // Build / update chart
       const ctx = $("pieChart");
       const data = [counts.NT, counts.JOSUE, counts.LS];
 
@@ -1169,7 +1278,6 @@
           labels: ["NT", "JOSUE", "LS"],
           datasets: [{
             data,
-            // Keep colors subtle pearl + neon hint
             backgroundColor: [
               "rgba(57,255,20,0.40)",
               "rgba(0,200,255,0.26)",
@@ -1187,7 +1295,7 @@
               position: "bottom",
               labels: {
                 color: "rgba(10,10,15,0.78)",
-                font: { weight: "800" }
+                font: { weight: "900" }
               }
             },
             tooltip: {
@@ -1213,7 +1321,7 @@
     }
 
     // ------------------------
-    // RECORDS UI
+    // RECORDS UI (accordion por mes)
     // ------------------------
     function recordDateStr(r){
       const d = new Date(r.created_at);
@@ -1223,6 +1331,17 @@
     function recordTimeStr(r){
       const d = new Date(r.created_at);
       return d.toLocaleTimeString("es-MX", { hour:"2-digit", minute:"2-digit" });
+    }
+
+    function monthKeyFromRecord(r){
+      const d = new Date(r.created_at);
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;
+    }
+
+    function monthLabelFromKey(key){
+      const [y,m] = key.split("-").map(n=>parseInt(n,10));
+      const d = new Date(y, m-1, 1);
+      return d.toLocaleDateString("es-MX", { month:"long", year:"numeric" });
     }
 
     function buildRecordCard(r){
@@ -1286,12 +1405,47 @@
       desc.className = "desc";
       desc.textContent = r.descripcion || "—";
 
+      // Hidden image row + blur preview
       const imgHidden = document.createElement("div");
       imgHidden.className = "img-hidden";
 
       const ihLeft = document.createElement("div");
       ihLeft.className = "left";
-      ihLeft.innerHTML = `<i class="fa-solid fa-image"></i> Imagen oculta`;
+
+      const preview = document.createElement("div");
+      preview.className = "blur-preview";
+      if (r.image_data_url){
+        preview.style.setProperty("--bg", "url('" + r.image_data_url + "')");
+        preview.style.backgroundImage = "none";
+        preview.style.position = "relative";
+        preview.style.setProperty("background", "transparent");
+        preview.style.setProperty("border", "1px solid rgba(255,255,255,0.45)");
+        preview.style.setProperty("borderRadius", "14px");
+        preview.style.setProperty("overflow", "hidden");
+        // Use ::before background via inline style
+        preview.style.setProperty("--preview-url", `url("${r.image_data_url}")`);
+        preview.style.setProperty("backgroundColor", "rgba(255,255,255,0.18)");
+        preview.style.setProperty("boxShadow", "0 12px 26px rgba(0,0,0,0.10)");
+        preview.style.setProperty("backdropFilter", "blur(0px)");
+        preview.style.setProperty("-webkit-backdrop-filter", "blur(0px)");
+        preview.style.setProperty("cursor", "zoom-in");
+        preview.addEventListener("click", ()=>openImageModal(r));
+        // Inject background into ::before using style tag trick:
+        preview.style.setProperty("background-image", "none");
+        preview.style.setProperty("background", "rgba(255,255,255,0.18)");
+        preview.style.setProperty("--img", `url("${r.image_data_url}")`);
+        preview.style.cssText += `;`;
+        // We'll set dataset to use in a small helper
+        preview.dataset.bg = r.image_data_url;
+      } else {
+        preview.classList.add("noimg");
+        preview.textContent = "NO IMG";
+      }
+
+      const label = document.createElement("div");
+      label.innerHTML = `<i class="fa-solid fa-image"></i> Imagen (blur)`;
+      ihLeft.appendChild(preview);
+      ihLeft.appendChild(label);
 
       const ihBtns = document.createElement("div");
       ihBtns.style.display="flex";
@@ -1302,7 +1456,7 @@
       const btnView = document.createElement("button");
       btnView.className = "btn btn-primary";
       btnView.type="button";
-      btnView.innerHTML = `<i class="fa-solid fa-eye"></i> Ver imagen`;
+      btnView.innerHTML = `<i class="fa-solid fa-eye"></i> Ver`;
       btnView.disabled = !r.image_data_url;
       btnView.style.opacity = r.image_data_url ? "1" : "0.55";
       btnView.addEventListener("click", ()=>openImageModal(r));
@@ -1347,18 +1501,109 @@
     }
 
     function renderRecords(){
-      const grid = $("recordsGrid");
-      grid.innerHTML = "";
+      const acc = $("recordsAccordion");
+      acc.innerHTML = "";
+
       if (!filtered.length){
         $("recordsEmpty").style.display = "block";
         return;
       }
       $("recordsEmpty").style.display = "none";
 
-      // show latest first (already ordered by created_at desc)
+      const groups = new Map();
       for (const r of filtered){
-        grid.appendChild(buildRecordCard(r));
+        const k = monthKeyFromRecord(r);
+        if (!groups.has(k)) groups.set(k, []);
+        groups.get(k).push(r);
       }
+
+      const keys = Array.from(groups.keys()).sort((a,b)=> b.localeCompare(a));
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "month-acc";
+
+      keys.forEach((k, idx) => {
+        const list = (groups.get(k) || []).slice().sort((a,b)=> new Date(b.created_at) - new Date(a.created_at));
+        const totalCount = list.length;
+        const totalAmount = list.reduce((s,r)=>s + (Number(r.amount)||0), 0);
+
+        const item = document.createElement("div");
+        item.className = "month-item" + (idx===0 ? " open" : "");
+
+        const header = document.createElement("button");
+        header.type = "button";
+        header.className = "month-header";
+
+        const left = document.createElement("div");
+        left.className = "month-left";
+        left.innerHTML = `<i class="fa-solid fa-calendar"></i> ${monthLabelFromKey(k)}`;
+
+        const right = document.createElement("div");
+        right.className = "month-right";
+        right.innerHTML = `
+          <span class="month-chip"><i class="fa-solid fa-ticket"></i> ${totalCount}</span>
+          <span class="month-chip"><i class="fa-solid fa-sack-dollar"></i> $${fmtMoney(totalAmount)}</span>
+        `;
+
+        const chev = document.createElement("div");
+        chev.className = "month-chevron";
+        chev.innerHTML = `<i class="fa-solid fa-chevron-down"></i>`;
+
+        header.appendChild(left);
+        header.appendChild(right);
+        header.appendChild(chev);
+
+        const body = document.createElement("div");
+        body.className = "month-body";
+
+        const grid = document.createElement("div");
+        grid.className = "records-grid";
+
+        for (const r of list){
+          grid.appendChild(buildRecordCard(r));
+        }
+
+        body.appendChild(grid);
+
+        header.addEventListener("click", ()=>{
+          item.classList.toggle("open");
+        });
+
+        item.appendChild(header);
+        item.appendChild(body);
+        wrapper.appendChild(item);
+      });
+
+      acc.appendChild(wrapper);
+
+      // Apply blur backgrounds to preview boxes (safely, after DOM exists)
+      document.querySelectorAll(".blur-preview[data-bg]").forEach(el=>{
+        const url = el.dataset.bg;
+        el.style.setProperty("--preview-url", `url("${url}")`);
+        // set the ::before background via inline style by injecting a child
+        // (simple and reliable)
+        if (!el.querySelector(".pv")){
+          const pv = document.createElement("div");
+          pv.className = "pv";
+          pv.style.position = "absolute";
+          pv.style.inset = "-12px";
+          pv.style.backgroundImage = `url("${url}")`;
+          pv.style.backgroundSize = "cover";
+          pv.style.backgroundPosition = "center";
+          pv.style.filter = "blur(10px) saturate(1.08)";
+          pv.style.transform = "scale(1.12)";
+          pv.style.opacity = "0.95";
+          el.appendChild(pv);
+
+          const overlay = document.createElement("div");
+          overlay.style.position = "absolute";
+          overlay.style.inset = "0";
+          overlay.style.background = "radial-gradient(circle at 30% 20%, rgba(255,255,255,0.25), rgba(255,255,255,0) 60%)";
+          overlay.style.mixBlendMode = "overlay";
+          overlay.style.opacity = "0.6";
+          el.appendChild(overlay);
+        }
+      });
     }
 
     // ------------------------
@@ -1482,7 +1727,7 @@
     }
 
     // ------------------------
-    // MODAL (image or day detail)
+    // MODAL
     // ------------------------
     const modal = $("modal");
     const modalBody = $("modalBody");
@@ -1555,7 +1800,6 @@
       const mstr = calendarMonth || globalMonth || currentMonthStr();
       const { y, m } = parseMonthStr(mstr);
       return allRecords.filter(r => {
-        // calendar is based on selected month (independent of global, but usually same)
         if (r.year && r.month) return r.year === y && r.month === m;
         const d = new Date(r.created_at);
         return d.getFullYear() === y && (d.getMonth()+1) === m;
@@ -1563,7 +1807,7 @@
     }
 
     function groupByDay(list){
-      const map = new Map(); // yyyy-mm-dd -> array
+      const map = new Map();
       for (const r of list){
         const d = new Date(r.created_at);
         const key = toISODate(d);
@@ -1589,35 +1833,27 @@
 
       const mstr = calendarMonth || globalMonth || currentMonthStr();
       if (!calendarMonth) calendarMonth = mstr;
-
       $("calendarMonth").value = mstr;
 
       const list = filterForCalendarMonth();
       const byDay = groupByDay(list);
-
-      // Update dashboard period label to reflect global filter
-      $("statPeriod").textContent = globalMonth ? globalMonth : "Todo";
 
       const { y, m } = parseMonthStr(mstr);
       const first = new Date(y, m-1, 1);
       const last = new Date(y, m, 0);
       const daysInMonth = last.getDate();
 
-      // Monday=0..Sunday=6
       const jsDow = first.getDay(); // Sun=0..Sat=6
       const mondayIndex = (jsDow === 0) ? 6 : (jsDow - 1);
 
-      // Get max count for intensity
       let maxCount = 0;
-      for (const [k, arr] of byDay.entries()){
-        const c = arr.length;
-        if (c > maxCount) maxCount = c;
+      for (const arr of byDay.values()){
+        if (arr.length > maxCount) maxCount = arr.length;
       }
 
       const grid = $("calGrid");
       grid.innerHTML = "";
 
-      // leading blanks
       for (let i=0;i<mondayIndex;i++){
         const cell = document.createElement("div");
         cell.className = "day empty";
@@ -1647,7 +1883,6 @@
           cell.addEventListener("click", ()=>openDayModal(key, events));
         } else {
           cell.style.cursor = "default";
-          cell.addEventListener("click", ()=>{});
         }
 
         grid.appendChild(cell);
@@ -1748,7 +1983,6 @@
       }
 
       wrap.appendChild(items);
-
       modalBody.innerHTML = "";
       modalBody.appendChild(wrap);
       modal.classList.add("active");
@@ -1812,9 +2046,8 @@
     // Init
     // ------------------------
     (function init(){
-      // default month pickers
       const cm = currentMonthStr();
-      $("globalMonth").value = "";            // start with "Todo"
+      $("globalMonth").value = "";      // start with Todo
       $("calendarMonth").value = cm;
       calendarMonth = cm;
 
