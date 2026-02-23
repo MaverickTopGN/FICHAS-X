@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -6,1093 +5,1822 @@
   <title>Fichas X</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- Font Awesome (solid + brands) -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Chart.js for pie/donut -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
   <style>
-    :root {
-      --bg-body: #020617;
-      --bg-shell: #020617;
-      --bg-shell-grad: radial-gradient(circle at top left,#0f172a 0,#020617 45%,#000 100%);
-      --bg-card: #020617;
-      --border-soft: #111827;
-      --border-strong: #1f2937;
-      --text-main: #f9fafb;
-      --text-soft: #9ca3af;
-      --pill-bg: #020617;
-      --pill-border: #1f2937;
-      --accent: #22c55e;
-      --accent2: #06b6d4;
-      --accent-dark: #0f766e;
-      --tab-border: #1f2937;
-      --danger: #ef4444;
-      --danger-dark: #b91c1c;
-      --input-bg: #020617;
-      --input-border: #111827;
+    :root{
+      --pearl-0:#f7f7f9;
+      --pearl-1:#efeff3;
+      --pearl-2:#e7e7ee;
+      --ink:#0a0a0f;
+      --muted:#3a3a44;
+      --muted-2:#6b6b78;
+
+      --glass-bg: rgba(255,255,255,0.16);
+      --glass-border: rgba(255,255,255,0.35);
+      --glass-shadow: 0 18px 60px rgba(0,0,0,0.18);
+      --glass-blur: 22px;
+
+      --green:#39ff14; /* fluorescent */
+      --green-2:#1bff66;
+      --green-ink:#041006;
+
+      --danger:#ff3b30;
+      --warn:#ffcc00;
+
+      --radius-xl: 26px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-sm: 12px;
+
+      --grid-gap: 14px;
+      --maxw: 1200px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      padding: 24px 12px;
-      background: var(--bg-shell-grad);
-      color: var(--text-main);
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
       font-family: system-ui,-apple-system,BlinkMacSystemFont,"Inter",sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 800px at 15% 10%, rgba(57,255,20,0.12), rgba(0,0,0,0) 60%),
+        radial-gradient(1100px 750px at 85% 20%, rgba(0,140,255,0.10), rgba(0,0,0,0) 60%),
+        radial-gradient(900px 700px at 60% 95%, rgba(255,0,180,0.08), rgba(0,0,0,0) 60%),
+        linear-gradient(180deg, var(--pearl-0), var(--pearl-2));
+      overflow-x:hidden;
     }
 
-    .shell {
-      max-width: 1200px;
-      margin: 0 auto;
-      background: var(--bg-shell);
-      border-radius: 28px;
-      border: 1px solid #0b1120;
-      box-shadow: 0 24px 60px rgba(0,0,0,0.75);
-      padding: 24px 28px 28px;
-    }
-
-    /* HEADER */
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-      gap: 16px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .brand-logo {
-      width: 40px;
-      height: 40px;
-      border-radius: 20px;
-      background: radial-gradient(circle at 0 0,#22c55e 0,#06b6d4 40%,#0f172a 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    /* Liquid glass container */
+    .shell{
+      width: min(var(--maxw), calc(100% - 28px));
+      margin: 18px auto 40px;
+      border-radius: var(--radius-xl);
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      padding: 18px;
       position: relative;
-      overflow: hidden;
     }
 
-    .brand-logo-bars {
-      width: 60%;
-      height: 60%;
-      display: flex;
-      align-items: flex-end;
-      gap: 4px;
+    /* Subtle inner glow */
+    .shell::before{
+      content:"";
+      position:absolute; inset:0;
+      border-radius: var(--radius-xl);
+      pointer-events:none;
+      background:
+        radial-gradient(900px 400px at 20% 0%, rgba(255,255,255,0.35), rgba(255,255,255,0) 55%),
+        radial-gradient(700px 350px at 85% 10%, rgba(255,255,255,0.25), rgba(255,255,255,0) 55%);
+      mix-blend-mode: overlay;
+      opacity: 0.65;
     }
 
-    .brand-logo-bars span {
-      flex: 1;
-      border-radius: 999px;
-      background: rgba(15,23,42,0.9);
+    .header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding: 10px 10px 14px;
+      position: relative;
+      z-index: 1;
     }
 
-    .brand-logo-bars span:nth-child(1) { height: 40%; }
-    .brand-logo-bars span:nth-child(2) { height: 75%; }
-    .brand-logo-bars span:nth-child(3) { height: 55%; }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width: 220px;
+    }
 
-    .brand-text-title {
+    .logo{
+      width:44px; height:44px;
+      border-radius: 16px;
+      background:
+        radial-gradient(circle at 0 0, rgba(57,255,20,0.95), rgba(0,220,255,0.55) 45%, rgba(255,255,255,0.15) 100%);
+      border: 1px solid rgba(255,255,255,0.55);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 12px 30px rgba(57,255,20,0.18);
+    }
+
+    .logo i{
+      color: rgba(10,10,15,0.85);
       font-size: 18px;
-      font-weight: 700;
-      letter-spacing: 0.16em;
+    }
+
+    .brand h1{
+      margin:0;
+      font-size: 16px;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
+      font-weight: 800;
     }
-
-    .brand-text-sub {
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text-soft);
-      margin-top: 2px;
-    }
-
-    .header-right {
-      font-size: 12px;
-      color: var(--text-soft);
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-    }
-
-    /* FILTROS SUPERIORES */
-
-    .top-filters-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-    }
-
-    .pill-select {
-      flex: 1 1 180px;
-      background: var(--pill-bg);
-      border-radius: 999px;
-      border: 1px solid var(--pill-border);
-      padding: 6px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .pill-select select {
-      width: 100%;
-      border: none;
-      background: transparent;
-      color: var(--text-main);
-      font-size: 13px;
-      outline: none;
-      appearance: none;
-    }
-
-    .pill-select::after {
-      content: "▾";
-      font-size: 11px;
-      color: var(--text-soft);
-      margin-left: 8px;
-    }
-
-    .period-label {
-      font-size: 12px;
-      color: var(--text-soft);
-      margin-left: auto;
-      margin-right: 4px;
-    }
-
-    .btn-ghost {
-      padding: 8px 16px;
-      border-radius: 999px;
-      border: 1px solid var(--pill-border);
-      background: transparent;
-      color: var(--text-main);
-      font-size: 12px;
-      cursor: pointer;
-    }
-
-    .btn-ghost:hover {
-      border-color: var(--accent2);
-      color: var(--accent2);
-    }
-
-    /* TABS */
-
-    .tabs {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-
-    .tab-btn {
-      padding: 8px 18px;
-      border-radius: 999px;
-      border: 1px solid var(--tab-border);
-      background: #020617;
-      color: var(--text-soft);
-      font-size: 13px;
-      cursor: pointer;
-      transition: all .12s ease;
-    }
-
-    .tab-btn:hover {
-      border-color: var(--accent2);
-      color: var(--text-main);
-    }
-
-    .tab-btn.active {
-      background: linear-gradient(90deg,var(--accent) 0,var(--accent2) 100%);
-      color: #0f172a;
-      border-color: transparent;
-      font-weight: 600;
-    }
-
-    hr.divider {
-      border: none;
-      border-top: 1px solid #0b1120;
-      margin: 0 0 20px;
-    }
-
-    /* CONTENIDO GENERAL */
-
-    .section {
-      border-radius: 18px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-soft);
-      padding: 18px 18px 16px;
-      margin-bottom: 16px;
-    }
-
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-
-    .section-title {
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .section-subtitle {
-      font-size: 12px;
-      color: var(--text-soft);
-    }
-
-    .section-right-note {
-      font-size: 11px;
-      color: var(--text-soft);
-      text-align: right;
-    }
-
-    label {
-      font-size: 11px;
-      color: var(--text-soft);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      display: block;
-      margin-bottom: 4px;
-    }
-
-    input[type="number"],
-    input[type="text"],
-    input[type="file"] {
-      width: 100%;
-      border-radius: 999px;
-      border: 1px solid var(--input-border);
-      background: var(--input-bg);
-      color: var(--text-main);
-      font-size: 13px;
-      padding: 8px 14px;
-      outline: none;
-      margin-bottom: 10px;
-    }
-
-    input[type="file"] {
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: #020617;
-    }
-
-    input:focus {
-      border-color: var(--accent2);
-      box-shadow: 0 0 0 1px rgba(56,189,248,0.45);
-    }
-
-    .row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .col {
-      flex: 1 1 180px;
-      min-width: 0;
-    }
-
-    .btn-primary {
-      border-radius: 999px;
-      padding: 9px 18px;
-      border: none;
-      cursor: pointer;
-      background: linear-gradient(90deg,var(--accent) 0,var(--accent2) 100%);
-      color: #0f172a;
-      font-weight: 600;
-      font-size: 13px;
-      box-shadow: 0 14px 36px rgba(34,197,94,0.45);
-      white-space: nowrap;
-    }
-
-    .btn-primary:hover {
-      filter: brightness(1.05);
-      box-shadow: 0 18px 42px rgba(6,182,212,0.6);
-    }
-
-    .btn-secondary {
-      border-radius: 999px;
-      padding: 7px 14px;
-      border: 1px solid var(--tab-border);
-      background: transparent;
-      color: var(--text-soft);
-      font-size: 11px;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-block;
-    }
-
-    .btn-secondary:hover {
-      border-color: var(--accent2);
-      color: var(--accent2);
-    }
-
-    .btn-delete {
-      border-radius: 999px;
-      padding: 7px 14px;
-      border: none;
-      cursor: pointer;
-      background: linear-gradient(90deg,var(--danger) 0,var(--danger-dark) 100%);
-      color: #fee2e2;
-      font-size: 11px;
-      box-shadow: 0 10px 26px rgba(248,113,113,0.5);
-    }
-
-    .footer-text {
-      font-size: 11px;
-      color: var(--text-soft);
-      text-align: right;
-      margin-top: 8px;
-    }
-
-    /* RESUMEN / LISTA */
-
-    .summary-title {
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--text-soft);
-      margin-bottom: 4px;
-    }
-
-    .summary-amount {
-      font-size: 18px;
-      font-weight: 700;
-    }
-
-    .summary-sub {
-      font-size: 11px;
-      color: var(--text-soft);
-    }
-
-    .records-list {
-      margin-top: 14px;
-      border-top: 1px solid #0b1120;
-      padding-top: 14px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
-      gap: 12px;
-    }
-
-    .record-item {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      padding: 12px 12px 10px;
-      border-radius: 18px;
-      background: #020617;
-      border: 1px solid #0b1120;
-      box-shadow: 0 14px 30px rgba(0,0,0,0.7);
-    }
-
-    .record-thumb {
-      width: 160px;
-      height: 160px;
-      border-radius: 18px;
-      background: #020617;
-      border: 1px solid #111827;
-      object-fit: cover;
-      flex-shrink: 0;
-      cursor: zoom-in;
-      align-self: center;
-    }
-
-    .record-info {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .record-line1 {
-      font-size: 14px;
-      font-weight: 500;
-      margin-bottom: 2px;
-    }
-
-    .record-line2 {
-      font-size: 11px;
-      color: var(--text-soft);
-    }
-
-    .record-line3 {
-      font-size: 11px;
-      color: var(--text-soft);
-    }
-
-    .record-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      align-items: center;
-      justify-content: flex-end;
-    }
-
-    .empty-text {
-      font-size: 11px;
-      color: var(--text-soft);
-      margin-top: 4px;
-    }
-
-    /* PANEL GENERAL */
-
-    .panel-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
-      gap: 10px;
-    }
-
-    .panel-card {
-      border-radius: 18px;
-      background: #020617;
-      border: 1px solid #0b1120;
-      padding: 12px 14px;
-    }
-
-    .panel-card-title {
+    .brand p{
+      margin:4px 0 0;
       font-size: 11px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--text-soft);
-      margin-bottom: 4px;
-    }
-
-    .panel-card-amount {
-      font-size: 17px;
+      color: var(--muted-2);
       font-weight: 600;
     }
 
-    .panel-card-sub {
-      font-size: 11px;
-      color: var(--text-soft);
+    .top-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap: wrap;
+      justify-content:flex-end;
     }
 
-    /* MODAL IMAGEN */
+    .pill{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.40);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.10);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+    }
 
-    .image-modal {
+    .btn{
+      border: none;
+      cursor: pointer;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      transition: transform .08s ease, filter .15s ease, box-shadow .15s ease;
+      user-select:none;
+      text-decoration:none;
+      white-space: nowrap;
+    }
+
+    .btn:active{ transform: translateY(1px) }
+
+    .btn-primary{
+      background: linear-gradient(90deg, var(--green), var(--green-2));
+      color: var(--green-ink);
+      box-shadow: 0 18px 40px rgba(57,255,20,0.18);
+    }
+    .btn-primary:hover{ filter: brightness(1.03) }
+
+    .btn-ghost{
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.35);
+      color: var(--muted);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+    }
+    .btn-ghost:hover{ filter: brightness(1.03) }
+
+    .btn-danger{
+      background: rgba(255,59,48,0.12);
+      border: 1px solid rgba(255,59,48,0.22);
+      color: #7a1410;
+      box-shadow: 0 12px 28px rgba(255,59,48,0.10);
+    }
+
+    /* Tabs */
+    .tabs{
+      display:flex;
+      gap:10px;
+      padding: 0 10px 10px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+    .tab{
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.36);
+      background: rgba(255,255,255,0.14);
+      color: var(--muted);
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      user-select:none;
+      transition: filter .15s ease, transform .08s ease, box-shadow .15s ease;
+      box-shadow: 0 10px 26px rgba(0,0,0,0.08);
+    }
+    .tab:hover{ filter: brightness(1.03) }
+    .tab.active{
+      background: linear-gradient(90deg, rgba(57,255,20,0.60), rgba(0,240,255,0.22));
+      border-color: rgba(57,255,20,0.45);
+      color: rgba(10,10,15,0.92);
+      box-shadow: 0 16px 36px rgba(57,255,20,0.14);
+    }
+
+    .divider{
+      height:1px;
+      background: rgba(255,255,255,0.40);
+      margin: 6px 10px 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Grid layout */
+    .content{
+      display:grid;
+      gap: var(--grid-gap);
+      padding: 0 10px 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .glass-card{
+      border-radius: var(--radius-lg);
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.38);
+      box-shadow: 0 16px 46px rgba(0,0,0,0.10);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      padding: 16px;
+    }
+
+    .card-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom: 12px;
+    }
+    .card-title{
+      margin:0;
+      font-size: 14px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      font-weight: 900;
+      color: rgba(10,10,15,0.90);
+    }
+    .card-sub{
+      margin:8px 0 0;
+      font-size: 12px;
+      color: var(--muted-2);
+      font-weight: 700;
+    }
+
+    /* Stat tiles */
+    .stats{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .stat{
+      border-radius: var(--radius-md);
+      padding: 14px 14px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.36);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.08);
+    }
+    .stat-label{
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted-2);
+      font-weight: 800;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .stat-value{
+      margin-top: 8px;
+      font-size: 22px;
+      font-weight: 1000;
+      letter-spacing: -0.02em;
+      color: rgba(10,10,15,0.92);
+    }
+
+    /* Form */
+    .form-grid{
+      display:grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 12px;
+      align-items:end;
+    }
+    .field{ grid-column: span 3; }
+    .field.w4{ grid-column: span 4; }
+    .field.w6{ grid-column: span 6; }
+    .field.w12{ grid-column: span 12; }
+
+    label{
+      display:block;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted-2);
+      font-weight: 900;
+      margin-bottom: 6px;
+    }
+    input, select, textarea{
+      width:100%;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.45);
+      background: rgba(255,255,255,0.22);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      color: rgba(10,10,15,0.92);
+      font-weight: 700;
+      outline:none;
+    }
+    input::placeholder, textarea::placeholder{ color: rgba(58,58,68,0.55) }
+    textarea{ min-height: 44px; resize: vertical; }
+
+    .hint{
+      font-size: 11px;
+      color: var(--muted-2);
+      font-weight: 700;
+      margin-top: 8px;
+    }
+
+    /* Record cards */
+    .records-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .record{
+      border-radius: 18px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.40);
+      box-shadow: 0 16px 44px rgba(0,0,0,0.10);
+      padding: 14px;
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+      overflow:hidden;
+    }
+
+    .record-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 10px;
+    }
+
+    .badge-persona{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(57,255,20,0.22);
+      border: 1px solid rgba(57,255,20,0.35);
+      color: rgba(10,10,15,0.88);
+      font-weight: 1000;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .money{
+      font-size: 18px;
+      font-weight: 1000;
+      color: rgba(10,10,15,0.92);
+      letter-spacing: -0.02em;
+    }
+
+    .meta{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      color: var(--muted-2);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .meta span{
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.20);
+      border: 1px solid rgba(255,255,255,0.35);
+    }
+
+    .desc{
+      font-size: 13px;
+      color: rgba(10,10,15,0.85);
+      font-weight: 750;
+      line-height: 1.35;
+      margin-top: 2px;
+      min-height: 20px;
+    }
+
+    .record-actions{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 2px;
+    }
+
+    .img-hidden{
+      border-radius: 16px;
+      background: rgba(255,255,255,0.20);
+      border: 1px dashed rgba(255,255,255,0.45);
+      padding: 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+    }
+
+    .img-hidden .left{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      color: var(--muted);
+      font-weight: 900;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .img-hidden i{ color: rgba(10,10,15,0.72); }
+
+    /* Calendar */
+    .calendar-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .legend{
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--muted-2);
+    }
+    .dot{
+      width: 14px; height: 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.45);
+      background: rgba(255,255,255,0.20);
+    }
+    .dot.l1{ background: rgba(57,255,20,0.10) }
+    .dot.l2{ background: rgba(57,255,20,0.18) }
+    .dot.l3{ background: rgba(57,255,20,0.26) }
+    .dot.l4{ background: rgba(57,255,20,0.34) }
+    .dot.l5{ background: rgba(57,255,20,0.44) }
+
+    .cal-grid{
+      display:grid;
+      grid-template-columns: repeat(7, minmax(0,1fr));
+      gap: 10px;
+    }
+    .cal-head{
+      padding: 10px 12px;
+      text-align:center;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.35);
+      color: rgba(10,10,15,0.78);
+      font-weight: 1000;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    .day{
+      min-height: 92px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.35);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.07);
+      padding: 10px;
+      position: relative;
+      cursor: pointer;
+      transition: transform .08s ease, filter .15s ease, box-shadow .15s ease;
+      overflow: hidden;
+    }
+    .day:hover{ filter: brightness(1.02) }
+    .day:active{ transform: translateY(1px) }
+
+    .day.empty{
+      cursor: default;
+      opacity: 0.40;
+    }
+
+    .day-num{
+      font-weight: 1000;
+      color: rgba(10,10,15,0.82);
+      font-size: 14px;
+    }
+
+    .day-badge{
+      position:absolute;
+      right: 10px;
+      bottom: 10px;
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight: 1000;
+      background: rgba(10,10,15,0.07);
+      border: 1px solid rgba(255,255,255,0.40);
+      color: rgba(10,10,15,0.78);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+    }
+
+    .day.int-1{ background: rgba(57,255,20,0.08); border-color: rgba(57,255,20,0.20); }
+    .day.int-2{ background: rgba(57,255,20,0.14); border-color: rgba(57,255,20,0.26); }
+    .day.int-3{ background: rgba(57,255,20,0.20); border-color: rgba(57,255,20,0.32); }
+    .day.int-4{ background: rgba(57,255,20,0.28); border-color: rgba(57,255,20,0.38); }
+    .day.int-5{ background: rgba(57,255,20,0.38); border-color: rgba(57,255,20,0.48); }
+
+    /* Modal */
+    .modal{
       position: fixed;
       inset: 0;
-      background: rgba(15,23,42,0.92);
       display: none;
       align-items: center;
       justify-content: center;
+      background: rgba(10,10,15,0.45);
       z-index: 9999;
+      padding: 18px;
+    }
+    .modal.active{ display:flex; }
+
+    .modal-card{
+      width: min(980px, 100%);
+      max-height: min(86vh, 920px);
+      overflow: auto;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.20);
+      border: 1px solid rgba(255,255,255,0.45);
+      box-shadow: 0 30px 90px rgba(0,0,0,0.25);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      padding: 16px;
+      position: relative;
     }
 
-    .image-modal.active {
-      display: flex;
+    .modal-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .modal-title{
+      margin:0;
+      font-size: 14px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      font-weight: 1000;
+      color: rgba(10,10,15,0.90);
+    }
+    .modal-close{
+      border:1px solid rgba(255,255,255,0.50);
+      background: rgba(255,255,255,0.18);
+      border-radius: 999px;
+      padding: 10px 12px;
+      cursor: pointer;
+      font-weight: 1000;
+      display:flex;
+      align-items:center;
+      gap:10px;
     }
 
-    .image-modal-inner {
-      max-width: 90vw;
-      max-height: 90vh;
-      padding: 16px 18px 12px;
-      background: #020617;
+    .modal-img{
+      width: 100%;
+      max-height: 58vh;
+      object-fit: contain;
       border-radius: 18px;
-      border: 1px solid #1f2937;
-      box-shadow: 0 30px 80px rgba(0,0,0,0.85);
-      display: flex;
+      border: 1px solid rgba(255,255,255,0.45);
+      background: rgba(255,255,255,0.18);
+    }
+
+    .modal-caption{
+      margin-top: 10px;
+      color: rgba(10,10,15,0.82);
+      font-weight: 800;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .modal-actions{
+      display:flex;
+      gap: 10px;
+      justify-content:flex-end;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    /* Day list inside modal */
+    .day-items{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .day-item{
+      border-radius: 18px;
+      padding: 12px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.40);
+      box-shadow: 0 14px 40px rgba(0,0,0,0.10);
+      display:flex;
       flex-direction: column;
       gap: 10px;
-      align-items: center;
     }
-
-    .image-modal-inner img {
-      max-width: 100%;
-      max-height: 70vh;
+    .day-item img{
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
       border-radius: 16px;
-      border: 1px solid #111827;
-      object-fit: contain;
+      border: 1px solid rgba(255,255,255,0.45);
+      background: rgba(255,255,255,0.18);
+      cursor: zoom-in;
     }
 
-    .image-modal-caption {
+    .small{
       font-size: 12px;
-      color: var(--text-soft);
-      text-align: center;
+      color: var(--muted-2);
+      font-weight: 800;
     }
 
-    .image-modal-actions {
-      display: flex;
-      gap: 8px;
-      margin-top: 4px;
+    .footer{
+      margin-top: 6px;
+      padding: 0 10px 6px;
+      font-size: 12px;
+      color: var(--muted-2);
+      font-weight: 800;
+      position: relative;
+      z-index: 1;
+      display:flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
-    .image-modal-close {
-      position: absolute;
-      top: 16px;
-      right: 18px;
+    .toast{
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 18px;
+      background: rgba(255,255,255,0.22);
+      border: 1px solid rgba(255,255,255,0.45);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      color: rgba(10,10,15,0.88);
       border-radius: 999px;
-      border: 1px solid #1f2937;
-      background: rgba(15,23,42,0.8);
-      color: #e5e7eb;
-      font-size: 12px;
-      padding: 6px 10px;
-      cursor: pointer;
+      padding: 10px 14px;
+      box-shadow: 0 16px 44px rgba(0,0,0,0.12);
+      font-weight: 900;
+      display:none;
+      z-index: 10000;
     }
+    .toast.show{ display:block; }
 
-    @media (max-width: 768px) {
-      .shell { padding: 18px 16px 20px; }
-      .header { flex-direction: column; align-items: flex-start; }
-      .top-filters-row { align-items: stretch; }
-      .period-label { margin-left: 0; }
+    @media (max-width: 860px){
+      .stats{ grid-template-columns: 1fr; }
+      .field{ grid-column: span 6; }
+      .field.w4{ grid-column: span 6; }
+      .field.w6{ grid-column: span 12; }
+      .top-actions{ justify-content:flex-start; }
     }
   </style>
 </head>
+
 <body>
   <div class="shell">
-    <!-- HEADER -->
-    <header class="header">
+    <div class="header">
       <div class="brand">
-        <div class="brand-logo">
-          <div class="brand-logo-bars">
-            <span></span><span></span><span></span>
-          </div>
-        </div>
+        <div class="logo"><i class="fa-solid fa-layer-group"></i></div>
         <div>
-          <div class="brand-text-title">Fichas X</div>
-          <div class="brand-text-sub">Control de fichas entregadas</div>
+          <h1>FICHAS X</h1>
+          <p>Control de fichas entregadas</p>
         </div>
       </div>
-      <div class="header-right">
-        NT · JOSUE · LS
-      </div>
-    </header>
 
-    <!-- FILTROS SUPERIORES -->
-    <div class="top-filters-row">
-      <div class="pill-select">
-        <select id="filterMonth"></select>
+      <div class="top-actions">
+        <div class="pill" title="Proyecto">
+          <i class="fa-solid fa-cloud"></i>
+          Supabase + Netlify
+        </div>
+        <a class="btn btn-primary" id="btnRefresh" href="javascript:void(0)">
+          <i class="fa-solid fa-rotate"></i>
+          Actualizar
+        </a>
       </div>
-      <div class="pill-select">
-        <select id="filterYear"></select>
-      </div>
-      <span class="period-label">Periodo:</span>
-      <button class="btn-ghost" id="btnVerTodo">Ver todo</button>
     </div>
 
-    <!-- TABS -->
     <div class="tabs">
-      <button class="tab-btn active" data-tab="panel">Panel general</button>
-      <button class="tab-btn" data-tab="NT">NT</button>
-      <button class="tab-btn" data-tab="JOSUE">JOSUE</button>
-      <button class="tab-btn" data-tab="LS">LS</button>
+      <button class="tab active" data-tab="dashboard">
+        <i class="fa-solid fa-chart-pie"></i> Dashboard
+      </button>
+      <button class="tab" data-tab="records">
+        <i class="fa-solid fa-receipt"></i> Registros
+      </button>
+      <button class="tab" data-tab="calendar">
+        <i class="fa-solid fa-calendar-days"></i> Calendario
+      </button>
     </div>
 
-    <hr class="divider" />
+    <div class="divider"></div>
 
-    <!-- SECCIÓN AGREGAR (solo para tabs de persona) -->
-    <section class="section" id="sectionAdd">
-      <div class="section-header">
-        <div>
-          <div class="section-title">Agregar nueva ficha</div>
-          <div class="section-subtitle">Registra quién entregó, cuánto, folio, cuenta y la imagen de la ficha.</div>
-        </div>
-        <div class="section-right-note">
-          Se guardará en la pestaña actual (<span id="currentPersonaLabel">NT</span>).
-        </div>
-      </div>
+    <div class="content">
 
-      <form id="formFicha">
-        <div class="row">
-          <div class="col">
-            <label for="personaInput">Persona que entrega</label>
-            <input id="personaInput" type="text" disabled value="NT" />
+      <!-- DASHBOARD -->
+      <section class="glass-card" id="viewDashboard">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title">Dashboard de entregas</h2>
+            <p class="card-sub">Distribución de fichas por persona (NT, JOSUE, LS).</p>
           </div>
-          <div class="col">
-            <label for="montoInput">Monto entregado (MXN)</label>
-            <input id="montoInput" type="number" min="0" step="0.01" placeholder="Ej. 400000" required />
-          </div>
-          <div class="col">
-            <label for="descripcionInput">Descripción (opcional)</label>
-            <input id="descripcionInput" type="text" placeholder="Ej. Josue $400,000.00" />
+          <div class="pill">
+            <i class="fa-solid fa-circle-info"></i>
+            Conteo + Totales
           </div>
         </div>
 
-        <div class="row">
-          <div class="col">
-            <label for="folioInput">Folio</label>
-            <input id="folioInput" type="text" placeholder="Ej. 000123" />
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-label"><i class="fa-solid fa-ticket"></i> Total fichas</div>
+            <div class="stat-value" id="statTotalCount">0</div>
           </div>
-          <div class="col">
-            <label for="cuentaInput">Cuenta</label>
-            <input id="cuentaInput" type="text" placeholder="Ej. 123-456-789" />
+          <div class="stat">
+            <div class="stat-label"><i class="fa-solid fa-sack-dollar"></i> Total monto</div>
+            <div class="stat-value" id="statTotalAmount">$0.00</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label"><i class="fa-solid fa-bolt"></i> Periodo (vista)</div>
+            <div class="stat-value" id="statPeriod">Todo</div>
           </div>
         </div>
 
-        <div class="row" style="align-items:center;">
-          <div class="col">
-            <label for="imageInput">Imagen de la ficha</label>
-            <input id="imageInput" type="file" accept="image/*" />
+        <div style="display:grid;grid-template-columns: 1.2fr 0.8fr; gap: 12px; align-items:stretch;">
+          <div class="glass-card" style="padding:14px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;">
+              <div style="font-weight:1000;letter-spacing:0.10em;text-transform:uppercase;font-size:12px;color:rgba(10,10,15,0.78);">
+                Pastel por persona
+              </div>
+              <div class="pill" style="padding:8px 12px;">
+                <i class="fa-solid fa-chart-simple"></i>
+                NT / JOSUE / LS
+              </div>
+            </div>
+            <canvas id="pieChart" height="120"></canvas>
           </div>
-          <div class="col" style="display:flex;justify-content:flex-end;align-items:flex-end;">
-            <button type="submit" class="btn-primary">Guardar ficha</button>
+
+          <div class="glass-card" style="padding:14px;">
+            <div style="font-weight:1000;letter-spacing:0.10em;text-transform:uppercase;font-size:12px;color:rgba(10,10,15,0.78);margin-bottom:10px;">
+              Resumen rápido
+            </div>
+
+            <div style="display:grid; gap:10px;">
+              <div class="pill" style="justify-content:space-between;">
+                <span style="font-weight:1000"><i class="fa-solid fa-user"></i> NT</span>
+                <span id="sumNT" style="font-weight:1000">0</span>
+              </div>
+              <div class="pill" style="justify-content:space-between;">
+                <span style="font-weight:1000"><i class="fa-solid fa-user"></i> JOSUE</span>
+                <span id="sumJOSUE" style="font-weight:1000">0</span>
+              </div>
+              <div class="pill" style="justify-content:space-between;">
+                <span style="font-weight:1000"><i class="fa-solid fa-user"></i> LS</span>
+                <span id="sumLS" style="font-weight:1000">0</span>
+              </div>
+
+              <div class="hint">
+                Tip: Cambia el mes en Calendario para ver el periodo; el dashboard refleja el mismo periodo seleccionado.
+              </div>
+            </div>
           </div>
         </div>
-      </form>
-    </section>
+      </section>
 
-    <!-- SECCIÓN RESUMEN PERSONA -->
-    <section class="section" id="sectionPersona">
-      <div class="section-header">
-        <div>
-          <div class="summary-title" id="personaResumenTitulo">RESUMEN NT</div>
-          <div class="summary-amount" id="personaResumenMonto">$0.00</div>
-          <div class="summary-sub" id="personaResumenSub">0 fichas registradas</div>
-        </div>
-      </div>
-
-      <div class="records-list" id="recordsList"></div>
-      <div class="empty-text" id="emptyPersona">No hay fichas registradas para esta persona y periodo.</div>
-    </section>
-
-    <!-- PANEL GENERAL -->
-    <section class="section" id="sectionPanel" style="display:none;">
-      <div class="section-header">
-        <div>
-          <div class="section-title">Panel general</div>
-          <div class="section-subtitle">
-            Totales por persona según los filtros de mes y año seleccionados.
+      <!-- RECORDS -->
+      <section class="glass-card" id="viewRecords" style="display:none;">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title">Registros</h2>
+            <p class="card-sub">Sube fichas y consulta el historial (imágenes ocultas hasta que las abras).</p>
+          </div>
+          <div class="pill">
+            <i class="fa-solid fa-lock"></i>
+            Imágenes colapsadas
           </div>
         </div>
-      </div>
-      <div class="panel-grid">
-        <div class="panel-card">
-          <div class="panel-card-title">Total general</div>
-          <div class="panel-card-amount" id="panelTotalGeneral">$0.00</div>
-          <div class="panel-card-sub" id="panelTotalGeneralSub">0 fichas registradas</div>
-        </div>
-        <div class="panel-card">
-          <div class="panel-card-title">Total NT</div>
-          <div class="panel-card-amount" id="panelTotalNT">$0.00</div>
-          <div class="panel-card-sub" id="panelTotalNTSub">0 fichas</div>
-        </div>
-        <div class="panel-card">
-          <div class="panel-card-title">Total JOSUE</div>
-          <div class="panel-card-amount" id="panelTotalJOSUE">$0.00</div>
-          <div class="panel-card-sub" id="panelTotalJOSUESub">0 fichas</div>
-        </div>
-        <div class="panel-card">
-          <div class="panel-card-title">Total LS</div>
-          <div class="panel-card-amount" id="panelTotalLS">$0.00</div>
-          <div class="panel-card-sub" id="panelTotalLSSub">0 fichas</div>
-        </div>
-      </div>
-    </section>
 
-    <div class="footer-text">
-      Fichas X · Datos guardados en tu navegador (localStorage)
+        <form id="formFicha">
+          <div class="form-grid">
+            <div class="field">
+              <label>Persona</label>
+              <select id="persona">
+                <option value="NT">NT</option>
+                <option value="JOSUE">JOSUE</option>
+                <option value="LS">LS</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Monto (MXN)</label>
+              <input id="amount" type="number" min="0" step="0.01" placeholder="Ej. 400000" required>
+            </div>
+            <div class="field">
+              <label>Folio</label>
+              <input id="folio" type="text" placeholder="Ej. 000123">
+            </div>
+            <div class="field">
+              <label>Cuenta</label>
+              <input id="cuenta" type="text" placeholder="Ej. 123-456-789">
+            </div>
+
+            <div class="field w6">
+              <label>Descripción</label>
+              <input id="descripcion" type="text" placeholder="Ej. Pago / Nota / Referencia">
+            </div>
+
+            <div class="field w4">
+              <label>Imagen</label>
+              <input id="image" type="file" accept="image/*">
+            </div>
+
+            <div class="field w2" style="grid-column: span 2;">
+              <button class="btn btn-primary" type="submit" style="width:100%; justify-content:center;">
+                <i class="fa-solid fa-floppy-disk"></i> Guardar
+              </button>
+            </div>
+          </div>
+          <div class="hint">
+            * La imagen se guarda en la BD como base64 (por ahora). Si quieres, luego migramos a Supabase Storage para hacerlo más ligero y pro.
+          </div>
+        </form>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:14px;">
+          <div class="pill">
+            <i class="fa-solid fa-filter"></i>
+            Filtro (para dashboard + calendario):
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <div class="pill">
+              <i class="fa-solid fa-calendar"></i>
+              <input id="globalMonth" type="month" style="border:none;background:transparent; padding:0; width:140px; font-weight:900;">
+            </div>
+            <a class="btn btn-ghost" href="javascript:void(0)" id="btnClearFilter">
+              <i class="fa-solid fa-xmark"></i> Ver todo
+            </a>
+          </div>
+        </div>
+
+        <div class="records-grid" id="recordsGrid"></div>
+        <div class="hint" id="recordsEmpty" style="display:none;">
+          No hay registros para este periodo.
+        </div>
+      </section>
+
+      <!-- CALENDAR -->
+      <section class="glass-card" id="viewCalendar" style="display:none;">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title">Eventos por día (Calendario)</h2>
+            <p class="card-sub">Agrupa fichas por día. Click en un día para ver imágenes + descripción + descargar.</p>
+          </div>
+          <div class="pill">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            Estilo VISITAS
+          </div>
+        </div>
+
+        <div class="calendar-top">
+          <div class="legend">
+            Intensidad:
+            <span class="dot l1"></span>
+            <span class="dot l2"></span>
+            <span class="dot l3"></span>
+            <span class="dot l4"></span>
+            <span class="dot l5"></span>
+            <span style="margin-left:6px;">más eventos</span>
+          </div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end;">
+            <div class="pill">
+              <i class="fa-solid fa-calendar"></i>
+              <input id="calendarMonth" type="month" style="border:none;background:transparent; padding:0; width:140px; font-weight:900;">
+            </div>
+            <a class="btn btn-primary" href="javascript:void(0)" id="btnExportCSV">
+              <i class="fa-solid fa-file-csv"></i> Exportar CSV
+            </a>
+          </div>
+        </div>
+
+        <div class="cal-grid" id="calHeader"></div>
+        <div class="cal-grid" id="calGrid" style="margin-top:10px;"></div>
+
+        <div class="hint">
+          Click en un día para ver detalle (monto + folio + cuenta + descripción + imagen). Exporta CSV del mes seleccionado.
+        </div>
+      </section>
+
+    </div>
+
+    <div class="footer">
+      <div>Fichas X · Liquid Glass UI · Font Awesome</div>
+      <div id="footStatus">Conectando…</div>
     </div>
   </div>
 
-  <!-- MODAL PARA VER IMAGEN GRANDE -->
-  <div class="image-modal" id="imageModal">
-    <button class="image-modal-close" id="imageModalClose">Cerrar ✕</button>
-    <div class="image-modal-inner">
-      <img id="imageModalImg" src="" alt="Ficha ampliada" />
-      <div class="image-modal-caption" id="imageModalCaption"></div>
-      <div class="image-modal-actions">
-        <a id="imageModalDownload" class="btn-secondary" href="#" download>Descargar imagen</a>
+  <!-- MODAL IMAGEN / DETALLE -->
+  <div class="modal" id="modal">
+    <div class="modal-card">
+      <div class="modal-top">
+        <div>
+          <h3 class="modal-title" id="modalTitle">Detalle</h3>
+          <div class="small" id="modalSubtitle"></div>
+        </div>
+        <button class="modal-close" id="modalClose">
+          <i class="fa-solid fa-xmark"></i> Cerrar
+        </button>
       </div>
+
+      <div id="modalBody"></div>
     </div>
   </div>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
-    const STORAGE_KEY = "fichasXRecords";
-    const monthNames = [
-      "Enero","Febrero","Marzo","Abril","Mayo","Junio",
-      "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"
-    ];
+    // ------------------------
+    // SUPABASE CONFIG (tuyo)
+    // ------------------------
+    const SUPABASE_URL = "https://skeryidujszdhujrvufv.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNrZXJ5aWR1anN6ZGh1anJ2dWZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ4ODAyNzYsImV4cCI6MjA4MDQ1NjI3Nn0.B_z8m37aUkBIb3gpq5yaToKGVRjForyyYoLgiQIHKno";
+    const { createClient } = supabase;
+    const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    let records = [];
-    let currentTab = "NT"; // panel | NT | JOSUE | LS
+    // ------------------------
+    // STATE
+    // ------------------------
+    let allRecords = [];
+    let filtered = [];
+    let activeTab = "dashboard";
+    let pie = null;
 
-    function loadFromStorage() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) { records = []; return; }
-        const parsed = JSON.parse(raw);
-        records = (Array.isArray(parsed) ? parsed : []).map(r => {
-          const rec = { ...r };
-          if (!rec.year || !rec.month) {
-            if (rec.monthKey) {
-              const [y,m] = rec.monthKey.split("-");
-              rec.year = parseInt(y,10);
-              rec.month = parseInt(m,10);
-            } else if (rec.createdAt) {
-              const d = new Date(rec.createdAt);
-              if (!isNaN(d)) {
-                rec.year = d.getFullYear();
-                rec.month = d.getMonth()+1;
-              }
-            } else {
-              const d = new Date();
-              rec.year = d.getFullYear();
-              rec.month = d.getMonth()+1;
-            }
-          }
-          return rec;
-        });
-      } catch(e) {
-        console.error(e);
-        records = [];
-      }
+    // Global month filter: yyyy-mm or null
+    let globalMonth = null;
+
+    // Calendar month: yyyy-mm (defaults to globalMonth or current)
+    let calendarMonth = null;
+
+    const $ = (id) => document.getElementById(id);
+
+    function toast(msg){
+      const t = $("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(()=>t.classList.remove("show"), 2200);
     }
 
-    function saveToStorage() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+    function fmtMoney(n){
+      const v = Number(n || 0);
+      return v.toLocaleString("es-MX", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
-    function formatMoney(v) {
-      return v.toLocaleString("es-MX",{minimumFractionDigits:2,maximumFractionDigits:2});
+    function toISODate(d){
+      // yyyy-mm-dd in local time
+      const y = d.getFullYear();
+      const m = String(d.getMonth()+1).padStart(2,"0");
+      const day = String(d.getDate()).padStart(2,"0");
+      return `${y}-${m}-${day}`;
     }
 
-    function buildFilters() {
-      const selMonth = document.getElementById("filterMonth");
-      const selYear = document.getElementById("filterYear");
-      selMonth.innerHTML = "";
-      selYear.innerHTML = "";
-
-      const optAllM = document.createElement("option");
-      optAllM.value = "all";
-      optAllM.textContent = "Todos los meses";
-      selMonth.appendChild(optAllM);
-
-      for (let i=0;i<12;i++) {
-        const opt = document.createElement("option");
-        opt.value = (i+1).toString();
-        opt.textContent = monthNames[i];
-        selMonth.appendChild(opt);
-      }
-
-      const currentYear = new Date().getFullYear();
-      const optAllY = document.createElement("option");
-      optAllY.value = "all";
-      optAllY.textContent = "Todos los años";
-      selYear.appendChild(optAllY);
-
-      for (let y=currentYear-1;y<=currentYear+1;y++) {
-        const opt = document.createElement("option");
-        opt.value = y.toString();
-        opt.textContent = y.toString();
-        selYear.appendChild(opt);
-      }
-
-      selMonth.value = "all";
-      selYear.value = "all";
+    function parseMonthStr(ms){
+      // "yyyy-mm" -> {y,m}
+      const [y,m] = ms.split("-").map(x=>parseInt(x,10));
+      return { y, m };
     }
 
-    function getFilterValues() {
-      const m = document.getElementById("filterMonth").value;
-      const y = document.getElementById("filterYear").value;
-      return { month: m === "all" ? null : parseInt(m,10),
-               year: y === "all" ? null : parseInt(y,10) };
+    function withinGlobalMonth(rec){
+      if (!globalMonth) return true;
+      const { y, m } = parseMonthStr(globalMonth);
+      // rec.year & rec.month exist; also created_at exists
+      if (rec.year && rec.month) return rec.year === y && rec.month === m;
+      const d = new Date(rec.created_at);
+      return d.getFullYear() === y && (d.getMonth()+1) === m;
     }
 
-    function filteredRecords() {
-      const {month,year} = getFilterValues();
-      return records.filter(r => {
-        if (month && r.month !== month) return false;
-        if (year && r.year !== year) return false;
-        return true;
-      });
+    function mapRow(row){
+      return {
+        id: row.id,
+        persona: row.persona,
+        amount: Number(row.amount),
+        descripcion: row.descripcion || "",
+        folio: row.folio || "",
+        cuenta: row.cuenta || "",
+        year: row.year,
+        month: row.month,
+        image_data_url: row.image_data_url || null,
+        created_at: row.created_at
+      };
     }
 
-    function render() {
-      const allFiltered = filteredRecords();
+    async function fetchAll(){
+      $("footStatus").textContent = "Cargando desde Supabase…";
+      const { data, error } = await db
+        .from("fichas_x")
+        .select("*")
+        .order("created_at", { ascending: false });
 
-      renderPanel(allFiltered);
-
-      if (currentTab === "panel") {
-        document.getElementById("sectionPanel").style.display = "block";
-        document.getElementById("sectionAdd").style.display = "none";
-        document.getElementById("sectionPersona").style.display = "none";
-      } else {
-        document.getElementById("sectionPanel").style.display = "none";
-        document.getElementById("sectionAdd").style.display = "block";
-        document.getElementById("sectionPersona").style.display = "block";
-        renderPersona(allFiltered, currentTab);
-      }
-
-      document.getElementById("currentPersonaLabel").textContent = currentTab === "panel" ? "--" : currentTab;
-      document.getElementById("personaInput").value = currentTab === "panel" ? "" : currentTab;
-      document.getElementById("personaInput").disabled = true;
-    }
-
-    function renderPanel(allFiltered) {
-      const personas = ["NT","JOSUE","LS"];
-
-      const totalGeneral = allFiltered.reduce((s,r)=>s+r.amount,0);
-      const totalCount = allFiltered.length;
-
-      document.getElementById("panelTotalGeneral").textContent = "$"+formatMoney(totalGeneral);
-      document.getElementById("panelTotalGeneralSub").textContent = `${totalCount} ficha${totalCount===1?"":"s"} registradas`;
-
-      personas.forEach(p => {
-        const list = allFiltered.filter(r=>r.persona===p);
-        const sum = list.reduce((s,r)=>s+r.amount,0);
-        const elAmount = document.getElementById("panelTotal"+p);
-        const elSub = document.getElementById("panelTotal"+p+"Sub");
-        if (elAmount) elAmount.textContent = "$"+formatMoney(sum);
-        if (elSub) elSub.textContent = `${list.length} ficha${list.length===1?"":"s"}`;
-      });
-    }
-
-    function renderPersona(allFiltered, persona) {
-      const list = allFiltered.filter(r=>r.persona===persona);
-      const total = list.reduce((s,r)=>s+r.amount,0);
-
-      document.getElementById("personaResumenTitulo").textContent = "RESUMEN "+persona;
-      document.getElementById("personaResumenMonto").textContent = "$"+formatMoney(total);
-      document.getElementById("personaResumenSub").textContent =
-        `${list.length} ficha${list.length===1?"":"s"} registradas`;
-
-      const listContainer = document.getElementById("recordsList");
-      const empty = document.getElementById("emptyPersona");
-      listContainer.innerHTML = "";
-
-      if (list.length === 0) {
-        empty.style.display = "block";
+      if (error){
+        console.error(error);
+        $("footStatus").textContent = "Error de conexión";
+        toast("Error cargando datos");
         return;
       }
-      empty.style.display = "none";
-
-      list
-        .slice()
-        .sort((a,b)=>b.createdAt.localeCompare(a.createdAt))
-        .forEach(rec => {
-          const row = document.createElement("div");
-          row.className = "record-item";
-
-          // Imagen o placeholder, clicable para abrir modal
-          if (rec.imageDataUrl) {
-            const img = document.createElement("img");
-            img.className = "record-thumb";
-            img.src = rec.imageDataUrl;
-            img.alt = rec.descripcion || "Ficha";
-            img.onclick = () => openImageModal(rec);
-            row.appendChild(img);
-          } else {
-            const placeholder = document.createElement("div");
-            placeholder.className = "record-thumb";
-            placeholder.style.display = "flex";
-            placeholder.style.alignItems = "center";
-            placeholder.style.justifyContent = "center";
-            placeholder.style.fontSize = "10px";
-            placeholder.style.color = "#4b5563";
-            placeholder.style.cursor = "default";
-            placeholder.textContent = "SIN IMAGEN";
-            row.appendChild(placeholder);
-          }
-
-          // Info debajo de la imagen
-          const info = document.createElement("div");
-          info.className = "record-info";
-
-          const line1 = document.createElement("div");
-          line1.className = "record-line1";
-          line1.textContent = "$"+formatMoney(rec.amount);
-          info.appendChild(line1);
-
-          const line2 = document.createElement("div");
-          line2.className = "record-line2";
-          const dateStr = rec.createdAt ? new Date(rec.createdAt).toLocaleDateString("es-MX") : "";
-          const desc = rec.descripcion ? " · "+rec.descripcion : "";
-          line2.textContent = `${dateStr}${desc}`;
-          info.appendChild(line2);
-
-          if (rec.folio || rec.cuenta) {
-            const line3 = document.createElement("div");
-            line3.className = "record-line3";
-            const parts = [];
-            if (rec.folio) parts.push("Folio: " + rec.folio);
-            if (rec.cuenta) parts.push("Cuenta: " + rec.cuenta);
-            line3.textContent = parts.join(" · ");
-            info.appendChild(line3);
-          }
-
-          row.appendChild(info);
-
-          // Acciones
-          const actions = document.createElement("div");
-          actions.className = "record-actions";
-
-          if (rec.imageDataUrl) {
-            const dl = document.createElement("a");
-            dl.className = "btn-secondary";
-            dl.textContent = "Descargar";
-            dl.href = rec.imageDataUrl;
-            dl.download = `ficha-${rec.persona}-${rec.id}.png`;
-            actions.appendChild(dl);
-          }
-
-          const bEdit = document.createElement("button");
-          bEdit.className = "btn-secondary";
-          bEdit.textContent = "Editar";
-          bEdit.onclick = () => editRecord(rec.id);
-
-          const bDel = document.createElement("button");
-          bDel.className = "btn-delete";
-          bDel.textContent = "Eliminar";
-          bDel.onclick = () => deleteRecord(rec.id);
-
-          actions.appendChild(bEdit);
-          actions.appendChild(bDel);
-
-          row.appendChild(actions);
-
-          listContainer.appendChild(row);
-        });
+      allRecords = data.map(mapRow);
+      $("footStatus").textContent = `Listo · ${allRecords.length} registros`;
+      applyFilterAndRender();
     }
 
-    function deleteRecord(id) {
-      if (!confirm("¿Seguro que deseas eliminar esta ficha?")) return;
-      records = records.filter(r=>r.id!==id);
-      saveToStorage();
-      render();
+    function applyFilterAndRender(){
+      filtered = allRecords.filter(withinGlobalMonth);
+      renderDashboard();
+      renderRecords();
+      renderCalendar();
     }
 
-    // EDITAR: monto, descripción, folio y cuenta
-    function editRecord(id) {
-      const rec = records.find(r => r.id === id);
-      if (!rec) return;
+    // ------------------------
+    // TABS
+    // ------------------------
+    function setTab(tab){
+      activeTab = tab;
 
-      const newAmountStr = prompt("Nuevo monto:", rec.amount.toString());
+      document.querySelectorAll(".tab").forEach(b=>{
+        b.classList.toggle("active", b.dataset.tab === tab);
+      });
+
+      $("viewDashboard").style.display = (tab==="dashboard") ? "block" : "none";
+      $("viewRecords").style.display   = (tab==="records") ? "block" : "none";
+      $("viewCalendar").style.display  = (tab==="calendar") ? "block" : "none";
+    }
+
+    document.querySelectorAll(".tab").forEach(btn=>{
+      btn.addEventListener("click", ()=>setTab(btn.dataset.tab));
+    });
+
+    // ------------------------
+    // FILTER WIRING
+    // ------------------------
+    function setGlobalMonth(value){
+      globalMonth = value || null;
+      $("statPeriod").textContent = globalMonth ? globalMonth : "Todo";
+      // keep calendar month aligned with global by default
+      if (globalMonth){
+        calendarMonth = globalMonth;
+        $("calendarMonth").value = calendarMonth;
+      }
+      applyFilterAndRender();
+    }
+
+    $("globalMonth").addEventListener("change", (e)=>{
+      setGlobalMonth(e.target.value);
+    });
+
+    $("btnClearFilter").addEventListener("click", ()=>{
+      $("globalMonth").value = "";
+      setGlobalMonth(null);
+      toast("Mostrando todo");
+    });
+
+    // Calendar month separate (but defaulted to global)
+    $("calendarMonth").addEventListener("change", (e)=>{
+      calendarMonth = e.target.value || globalMonth || currentMonthStr();
+      renderCalendar(); // only calendar changes
+      renderDashboard(); // also update stats period label & distribution if you want month to drive
+    });
+
+    function currentMonthStr(){
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;
+    }
+
+    // ------------------------
+    // DASHBOARD (PIE)
+    // ------------------------
+    function countByPersona(list){
+      const c = { NT:0, JOSUE:0, LS:0 };
+      for (const r of list){
+        if (c[r.persona] !== undefined) c[r.persona]++;
+      }
+      return c;
+    }
+
+    function sumAmount(list){
+      return list.reduce((s,r)=>s + (Number(r.amount)||0), 0);
+    }
+
+    function renderDashboard(){
+      // Dashboard reflects GLOBAL month filter (not calendar picker if they diverge)
+      const list = filtered;
+
+      const counts = countByPersona(list);
+      const totalCount = list.length;
+      const totalAmount = sumAmount(list);
+
+      $("statTotalCount").textContent = totalCount.toLocaleString("es-MX");
+      $("statTotalAmount").textContent = "$" + fmtMoney(totalAmount);
+      $("sumNT").textContent = counts.NT.toLocaleString("es-MX");
+      $("sumJOSUE").textContent = counts.JOSUE.toLocaleString("es-MX");
+      $("sumLS").textContent = counts.LS.toLocaleString("es-MX");
+
+      // Build / update chart
+      const ctx = $("pieChart");
+      const data = [counts.NT, counts.JOSUE, counts.LS];
+
+      const chartConfig = {
+        type: "doughnut",
+        data: {
+          labels: ["NT", "JOSUE", "LS"],
+          datasets: [{
+            data,
+            // Keep colors subtle pearl + neon hint
+            backgroundColor: [
+              "rgba(57,255,20,0.40)",
+              "rgba(0,200,255,0.26)",
+              "rgba(255,0,180,0.18)"
+            ],
+            borderColor: "rgba(255,255,255,0.55)",
+            borderWidth: 1.2,
+            hoverOffset: 8
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: "bottom",
+              labels: {
+                color: "rgba(10,10,15,0.78)",
+                font: { weight: "800" }
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => {
+                  const v = ctx.parsed;
+                  const p = totalCount ? ((v/totalCount)*100).toFixed(1) : "0.0";
+                  return ` ${ctx.label}: ${v} (${p}%)`;
+                }
+              }
+            }
+          },
+          cutout: "62%"
+        }
+      };
+
+      if (pie){
+        pie.data.datasets[0].data = data;
+        pie.update();
+      } else {
+        pie = new Chart(ctx, chartConfig);
+      }
+    }
+
+    // ------------------------
+    // RECORDS UI
+    // ------------------------
+    function recordDateStr(r){
+      const d = new Date(r.created_at);
+      return d.toLocaleDateString("es-MX", { year:"numeric", month:"short", day:"2-digit" });
+    }
+
+    function recordTimeStr(r){
+      const d = new Date(r.created_at);
+      return d.toLocaleTimeString("es-MX", { hour:"2-digit", minute:"2-digit" });
+    }
+
+    function buildRecordCard(r){
+      const div = document.createElement("div");
+      div.className = "record";
+
+      const top = document.createElement("div");
+      top.className = "record-top";
+
+      const left = document.createElement("div");
+      left.style.display="flex";
+      left.style.flexDirection="column";
+      left.style.gap="8px";
+
+      const badge = document.createElement("div");
+      badge.className = "badge-persona";
+      badge.innerHTML = `<i class="fa-solid fa-user"></i> ${r.persona}`;
+
+      const money = document.createElement("div");
+      money.className = "money";
+      money.textContent = "$" + fmtMoney(r.amount);
+
+      left.appendChild(badge);
+      left.appendChild(money);
+
+      const right = document.createElement("div");
+      right.style.display="flex";
+      right.style.flexDirection="column";
+      right.style.alignItems="flex-end";
+      right.style.gap="8px";
+
+      const meta = document.createElement("div");
+      meta.className = "meta";
+
+      const s1 = document.createElement("span");
+      s1.innerHTML = `<i class="fa-solid fa-calendar-day"></i> ${recordDateStr(r)}`;
+
+      const s2 = document.createElement("span");
+      s2.innerHTML = `<i class="fa-solid fa-clock"></i> ${recordTimeStr(r)}`;
+
+      meta.appendChild(s1);
+      meta.appendChild(s2);
+
+      if (r.folio){
+        const sF = document.createElement("span");
+        sF.innerHTML = `<i class="fa-solid fa-hashtag"></i> Folio: ${escapeHtml(r.folio)}`;
+        meta.appendChild(sF);
+      }
+      if (r.cuenta){
+        const sC = document.createElement("span");
+        sC.innerHTML = `<i class="fa-solid fa-building-columns"></i> Cuenta: ${escapeHtml(r.cuenta)}`;
+        meta.appendChild(sC);
+      }
+
+      right.appendChild(meta);
+
+      top.appendChild(left);
+      top.appendChild(right);
+
+      const desc = document.createElement("div");
+      desc.className = "desc";
+      desc.textContent = r.descripcion || "—";
+
+      const imgHidden = document.createElement("div");
+      imgHidden.className = "img-hidden";
+
+      const ihLeft = document.createElement("div");
+      ihLeft.className = "left";
+      ihLeft.innerHTML = `<i class="fa-solid fa-image"></i> Imagen oculta`;
+
+      const ihBtns = document.createElement("div");
+      ihBtns.style.display="flex";
+      ihBtns.style.gap="8px";
+      ihBtns.style.flexWrap="wrap";
+      ihBtns.style.justifyContent="flex-end";
+
+      const btnView = document.createElement("button");
+      btnView.className = "btn btn-primary";
+      btnView.type="button";
+      btnView.innerHTML = `<i class="fa-solid fa-eye"></i> Ver imagen`;
+      btnView.disabled = !r.image_data_url;
+      btnView.style.opacity = r.image_data_url ? "1" : "0.55";
+      btnView.addEventListener("click", ()=>openImageModal(r));
+
+      const btnDl = document.createElement("a");
+      btnDl.className = "btn btn-ghost";
+      btnDl.innerHTML = `<i class="fa-solid fa-download"></i> Descargar`;
+      btnDl.href = r.image_data_url || "#";
+      btnDl.download = `ficha-${r.persona}-${r.id}.png`;
+      btnDl.style.pointerEvents = r.image_data_url ? "auto" : "none";
+      btnDl.style.opacity = r.image_data_url ? "1" : "0.55";
+
+      ihBtns.appendChild(btnView);
+      ihBtns.appendChild(btnDl);
+
+      imgHidden.appendChild(ihLeft);
+      imgHidden.appendChild(ihBtns);
+
+      const actions = document.createElement("div");
+      actions.className = "record-actions";
+
+      const btnEdit = document.createElement("button");
+      btnEdit.className = "btn btn-ghost";
+      btnEdit.type="button";
+      btnEdit.innerHTML = `<i class="fa-solid fa-pen"></i> Editar`;
+      btnEdit.addEventListener("click", ()=>editRecord(r));
+
+      const btnDel = document.createElement("button");
+      btnDel.className = "btn btn-danger";
+      btnDel.type="button";
+      btnDel.innerHTML = `<i class="fa-solid fa-trash"></i> Eliminar`;
+      btnDel.addEventListener("click", ()=>deleteRecord(r));
+
+      actions.appendChild(btnEdit);
+      actions.appendChild(btnDel);
+
+      div.appendChild(top);
+      div.appendChild(desc);
+      div.appendChild(imgHidden);
+      div.appendChild(actions);
+      return div;
+    }
+
+    function renderRecords(){
+      const grid = $("recordsGrid");
+      grid.innerHTML = "";
+      if (!filtered.length){
+        $("recordsEmpty").style.display = "block";
+        return;
+      }
+      $("recordsEmpty").style.display = "none";
+
+      // show latest first (already ordered by created_at desc)
+      for (const r of filtered){
+        grid.appendChild(buildRecordCard(r));
+      }
+    }
+
+    // ------------------------
+    // CRUD (Supabase)
+    // ------------------------
+    $("formFicha").addEventListener("submit", async (e)=>{
+      e.preventDefault();
+
+      const persona = $("persona").value;
+      const amount = parseFloat($("amount").value);
+      const folio = ($("folio").value || "").trim();
+      const cuenta = ($("cuenta").value || "").trim();
+      const descripcion = ($("descripcion").value || "").trim();
+      const file = $("image").files && $("image").files[0] ? $("image").files[0] : null;
+
+      if (!amount || amount <= 0){
+        toast("Monto inválido");
+        return;
+      }
+
+      const now = new Date();
+      const payload = {
+        persona,
+        amount,
+        folio: folio || null,
+        cuenta: cuenta || null,
+        descripcion: descripcion || null,
+        year: now.getFullYear(),
+        month: now.getMonth()+1,
+        image_data_url: null
+      };
+
+      const insert = async ()=>{
+        const { data, error } = await db
+          .from("fichas_x")
+          .insert([payload])
+          .select("*")
+          .single();
+
+        if (error){
+          console.error(error);
+          toast("Error guardando");
+          return;
+        }
+        allRecords.unshift(mapRow(data));
+        e.target.reset();
+        toast("Guardado ✅");
+        applyFilterAndRender();
+      };
+
+      if (file){
+        const reader = new FileReader();
+        reader.onload = async (ev)=>{
+          payload.image_data_url = ev.target.result;
+          await insert();
+        };
+        reader.readAsDataURL(file);
+      } else {
+        await insert();
+      }
+    });
+
+    async function deleteRecord(r){
+      const ok = confirm(`¿Eliminar ficha de ${r.persona} por $${fmtMoney(r.amount)}?`);
+      if (!ok) return;
+
+      const { error } = await db.from("fichas_x").delete().eq("id", r.id);
+      if (error){
+        console.error(error);
+        toast("No se pudo eliminar");
+        return;
+      }
+      allRecords = allRecords.filter(x=>x.id !== r.id);
+      toast("Eliminado");
+      applyFilterAndRender();
+    }
+
+    async function editRecord(r){
+      const newAmountStr = prompt("Nuevo monto:", String(r.amount));
       if (newAmountStr === null) return;
       const newAmount = parseFloat(newAmountStr);
-      if (isNaN(newAmount) || newAmount < 0) {
+      if (isNaN(newAmount) || newAmount < 0){
         alert("Monto inválido.");
         return;
       }
 
-      const newDesc = prompt("Nueva descripción (puede quedar vacía):", rec.descripcion || "");
+      const newDesc = prompt("Nueva descripción (puede quedar vacía):", r.descripcion || "");
       if (newDesc === null) return;
 
-      const newFolio = prompt("Nuevo folio (puede quedar vacío):", rec.folio || "");
+      const newFolio = prompt("Nuevo folio (puede quedar vacío):", r.folio || "");
       if (newFolio === null) return;
 
-      const newCuenta = prompt("Nueva cuenta (puede quedar vacía):", rec.cuenta || "");
+      const newCuenta = prompt("Nueva cuenta (puede quedar vacía):", r.cuenta || "");
       if (newCuenta === null) return;
 
-      rec.amount = newAmount;
-      rec.descripcion = (newDesc || "").trim();
-      rec.folio = (newFolio || "").trim();
-      rec.cuenta = (newCuenta || "").trim();
+      const updates = {
+        amount: newAmount,
+        descripcion: (newDesc || "").trim() || null,
+        folio: (newFolio || "").trim() || null,
+        cuenta: (newCuenta || "").trim() || null
+      };
 
-      saveToStorage();
-      render();
-    }
+      const { data, error } = await db
+        .from("fichas_x")
+        .update(updates)
+        .eq("id", r.id)
+        .select("*")
+        .single();
 
-    // ---- MODAL DE IMAGEN ----
-
-    const imageModal = document.getElementById("imageModal");
-    const imageModalImg = document.getElementById("imageModalImg");
-    const imageModalCaption = document.getElementById("imageModalCaption");
-    const imageModalDownload = document.getElementById("imageModalDownload");
-    const imageModalClose = document.getElementById("imageModalClose");
-
-    function openImageModal(rec) {
-      if (!rec.imageDataUrl) return;
-      imageModalImg.src = rec.imageDataUrl;
-      const dateStr = rec.createdAt ? new Date(rec.createdAt).toLocaleDateString("es-MX") : "";
-      let caption = `${rec.persona} · ${dateStr}`;
-      if (rec.descripcion) caption += " · " + rec.descripcion;
-      const extra = [];
-      if (rec.folio) extra.push("Folio: " + rec.folio);
-      if (rec.cuenta) extra.push("Cuenta: " + rec.cuenta);
-      if (extra.length) caption += " · " + extra.join(" · ");
-      imageModalCaption.textContent = caption;
-      imageModalDownload.href = rec.imageDataUrl;
-      imageModalDownload.download = `ficha-${rec.persona}-${rec.id}.png`;
-      imageModal.classList.add("active");
-    }
-
-    imageModalClose.addEventListener("click", () => {
-      imageModal.classList.remove("active");
-      imageModalImg.src = "";
-    });
-
-    imageModal.addEventListener("click", (e) => {
-      if (e.target === imageModal) {
-        imageModal.classList.remove("active");
-        imageModalImg.src = "";
+      if (error){
+        console.error(error);
+        toast("No se pudo editar");
+        return;
       }
+
+      const updated = mapRow(data);
+      const idx = allRecords.findIndex(x=>x.id === r.id);
+      if (idx !== -1) allRecords[idx] = updated;
+      toast("Actualizado ✅");
+      applyFilterAndRender();
+    }
+
+    // ------------------------
+    // MODAL (image or day detail)
+    // ------------------------
+    const modal = $("modal");
+    const modalBody = $("modalBody");
+
+    $("modalClose").addEventListener("click", closeModal);
+    modal.addEventListener("click", (e)=>{
+      if (e.target === modal) closeModal();
     });
 
-    // ---- EVENTOS GENERALES ----
+    function closeModal(){
+      modal.classList.remove("active");
+      modalBody.innerHTML = "";
+    }
 
-    document.getElementById("btnVerTodo").addEventListener("click", () => {
-      document.getElementById("filterMonth").value = "all";
-      document.getElementById("filterYear").value = "all";
-      render();
-    });
+    function openImageModal(r){
+      $("modalTitle").textContent = `Imagen · ${r.persona}`;
+      $("modalSubtitle").textContent = `${recordDateStr(r)} · ${recordTimeStr(r)} · $${fmtMoney(r.amount)}`;
 
-    document.getElementById("filterMonth").addEventListener("change", render);
-    document.getElementById("filterYear").addEventListener("change", render);
+      const wrap = document.createElement("div");
 
-    document.querySelectorAll(".tab-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
-        btn.classList.add("active");
-        currentTab = btn.getAttribute("data-tab");
-        render();
+      const img = document.createElement("img");
+      img.className = "modal-img";
+      img.src = r.image_data_url;
+      img.alt = "Ficha";
+      wrap.appendChild(img);
+
+      const cap = document.createElement("div");
+      cap.className = "modal-caption";
+      cap.textContent = [
+        r.descripcion ? `Desc: ${r.descripcion}` : null,
+        r.folio ? `Folio: ${r.folio}` : null,
+        r.cuenta ? `Cuenta: ${r.cuenta}` : null,
+      ].filter(Boolean).join(" · ") || "—";
+      wrap.appendChild(cap);
+
+      const actions = document.createElement("div");
+      actions.className = "modal-actions";
+
+      const dl = document.createElement("a");
+      dl.className = "btn btn-primary";
+      dl.href = r.image_data_url || "#";
+      dl.download = `ficha-${r.persona}-${r.id}.png`;
+      dl.innerHTML = `<i class="fa-solid fa-download"></i> Descargar imagen`;
+
+      actions.appendChild(dl);
+      wrap.appendChild(actions);
+
+      modalBody.innerHTML = "";
+      modalBody.appendChild(wrap);
+      modal.classList.add("active");
+    }
+
+    // ------------------------
+    // CALENDAR
+    // ------------------------
+    const dow = ["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"];
+
+    function renderCalendarHeaders(){
+      const head = $("calHeader");
+      head.innerHTML = "";
+      for (const d of dow){
+        const cell = document.createElement("div");
+        cell.className = "cal-head";
+        cell.textContent = d;
+        head.appendChild(cell);
+      }
+    }
+
+    function filterForCalendarMonth(){
+      const mstr = calendarMonth || globalMonth || currentMonthStr();
+      const { y, m } = parseMonthStr(mstr);
+      return allRecords.filter(r => {
+        // calendar is based on selected month (independent of global, but usually same)
+        if (r.year && r.month) return r.year === y && r.month === m;
+        const d = new Date(r.created_at);
+        return d.getFullYear() === y && (d.getMonth()+1) === m;
       });
+    }
+
+    function groupByDay(list){
+      const map = new Map(); // yyyy-mm-dd -> array
+      for (const r of list){
+        const d = new Date(r.created_at);
+        const key = toISODate(d);
+        if (!map.has(key)) map.set(key, []);
+        map.get(key).push(r);
+      }
+      return map;
+    }
+
+    function intensityClass(count, max){
+      if (!count) return "";
+      if (max <= 1) return "int-3";
+      const ratio = count / max;
+      if (ratio <= 0.2) return "int-1";
+      if (ratio <= 0.4) return "int-2";
+      if (ratio <= 0.6) return "int-3";
+      if (ratio <= 0.8) return "int-4";
+      return "int-5";
+    }
+
+    function renderCalendar(){
+      renderCalendarHeaders();
+
+      const mstr = calendarMonth || globalMonth || currentMonthStr();
+      if (!calendarMonth) calendarMonth = mstr;
+
+      $("calendarMonth").value = mstr;
+
+      const list = filterForCalendarMonth();
+      const byDay = groupByDay(list);
+
+      // Update dashboard period label to reflect global filter
+      $("statPeriod").textContent = globalMonth ? globalMonth : "Todo";
+
+      const { y, m } = parseMonthStr(mstr);
+      const first = new Date(y, m-1, 1);
+      const last = new Date(y, m, 0);
+      const daysInMonth = last.getDate();
+
+      // Monday=0..Sunday=6
+      const jsDow = first.getDay(); // Sun=0..Sat=6
+      const mondayIndex = (jsDow === 0) ? 6 : (jsDow - 1);
+
+      // Get max count for intensity
+      let maxCount = 0;
+      for (const [k, arr] of byDay.entries()){
+        const c = arr.length;
+        if (c > maxCount) maxCount = c;
+      }
+
+      const grid = $("calGrid");
+      grid.innerHTML = "";
+
+      // leading blanks
+      for (let i=0;i<mondayIndex;i++){
+        const cell = document.createElement("div");
+        cell.className = "day empty";
+        grid.appendChild(cell);
+      }
+
+      for (let day=1; day<=daysInMonth; day++){
+        const d = new Date(y, m-1, day);
+        const key = toISODate(d);
+        const events = byDay.get(key) || [];
+        const count = events.length;
+
+        const cell = document.createElement("div");
+        cell.className = "day " + intensityClass(count, maxCount);
+
+        const num = document.createElement("div");
+        num.className = "day-num";
+        num.textContent = String(day);
+        cell.appendChild(num);
+
+        if (count){
+          const badge = document.createElement("div");
+          badge.className = "day-badge";
+          badge.textContent = String(count);
+          cell.appendChild(badge);
+
+          cell.addEventListener("click", ()=>openDayModal(key, events));
+        } else {
+          cell.style.cursor = "default";
+          cell.addEventListener("click", ()=>{});
+        }
+
+        grid.appendChild(cell);
+      }
+    }
+
+    function openDayModal(isoDate, events){
+      $("modalTitle").textContent = `Día · ${isoDate}`;
+      $("modalSubtitle").textContent = `${events.length} ficha(s)`;
+
+      const wrap = document.createElement("div");
+      const items = document.createElement("div");
+      items.className = "day-items";
+
+      for (const r of events){
+        const card = document.createElement("div");
+        card.className = "day-item";
+
+        const top = document.createElement("div");
+        top.style.display="flex";
+        top.style.alignItems="center";
+        top.style.justifyContent="space-between";
+        top.style.gap="10px";
+
+        const left = document.createElement("div");
+        left.className = "badge-persona";
+        left.style.background = "rgba(255,255,255,0.18)";
+        left.style.borderColor = "rgba(255,255,255,0.40)";
+        left.style.color = "rgba(10,10,15,0.86)";
+        left.innerHTML = `<i class="fa-solid fa-user"></i> ${r.persona}`;
+
+        const amt = document.createElement("div");
+        amt.className = "money";
+        amt.style.fontSize = "16px";
+        amt.textContent = "$" + fmtMoney(r.amount);
+
+        top.appendChild(left);
+        top.appendChild(amt);
+
+        const img = document.createElement("img");
+        img.src = r.image_data_url || "";
+        img.alt = "Ficha";
+        img.style.opacity = r.image_data_url ? "1" : "0.55";
+        img.addEventListener("click", ()=>{ if (r.image_data_url) openImageModal(r); });
+
+        const meta = document.createElement("div");
+        meta.className = "meta";
+        meta.style.marginTop = "2px";
+
+        const t = document.createElement("span");
+        t.innerHTML = `<i class="fa-solid fa-clock"></i> ${recordTimeStr(r)}`;
+        meta.appendChild(t);
+
+        if (r.folio){
+          const f = document.createElement("span");
+          f.innerHTML = `<i class="fa-solid fa-hashtag"></i> ${escapeHtml(r.folio)}`;
+          meta.appendChild(f);
+        }
+        if (r.cuenta){
+          const c = document.createElement("span");
+          c.innerHTML = `<i class="fa-solid fa-building-columns"></i> ${escapeHtml(r.cuenta)}`;
+          meta.appendChild(c);
+        }
+
+        const desc = document.createElement("div");
+        desc.className = "desc";
+        desc.textContent = r.descripcion || "—";
+
+        const actions = document.createElement("div");
+        actions.className = "record-actions";
+
+        const dl = document.createElement("a");
+        dl.className = "btn btn-primary";
+        dl.href = r.image_data_url || "#";
+        dl.download = `ficha-${r.persona}-${r.id}.png`;
+        dl.style.pointerEvents = r.image_data_url ? "auto" : "none";
+        dl.style.opacity = r.image_data_url ? "1" : "0.55";
+        dl.innerHTML = `<i class="fa-solid fa-download"></i> Descargar`;
+
+        const view = document.createElement("button");
+        view.className = "btn btn-ghost";
+        view.type="button";
+        view.innerHTML = `<i class="fa-solid fa-eye"></i> Ver`;
+        view.disabled = !r.image_data_url;
+        view.style.opacity = r.image_data_url ? "1" : "0.55";
+        view.addEventListener("click", ()=>openImageModal(r));
+
+        actions.appendChild(view);
+        actions.appendChild(dl);
+
+        card.appendChild(top);
+        card.appendChild(img);
+        card.appendChild(desc);
+        card.appendChild(meta);
+        card.appendChild(actions);
+
+        items.appendChild(card);
+      }
+
+      wrap.appendChild(items);
+
+      modalBody.innerHTML = "";
+      modalBody.appendChild(wrap);
+      modal.classList.add("active");
+    }
+
+    // Export CSV (calendar month)
+    $("btnExportCSV").addEventListener("click", ()=>{
+      const list = filterForCalendarMonth();
+      const rows = [
+        ["created_at","persona","amount","folio","cuenta","descripcion","image_present"]
+      ];
+
+      for (const r of list){
+        rows.push([
+          r.created_at,
+          r.persona,
+          String(r.amount ?? ""),
+          (r.folio ?? ""),
+          (r.cuenta ?? ""),
+          (r.descripcion ?? ""),
+          r.image_data_url ? "yes" : "no"
+        ]);
+      }
+
+      const csv = rows.map(r => r.map(csvEscape).join(",")).join("\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      const mstr = calendarMonth || globalMonth || currentMonthStr();
+      a.href = url;
+      a.download = `fichas_x_${mstr}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      toast("CSV exportado ✅");
     });
 
-    document.getElementById("formFicha").addEventListener("submit", e => {
-      e.preventDefault();
-      if (currentTab === "panel") {
-        alert("Selecciona NT, JOSUE o LS para registrar una ficha.");
-        return;
-      }
+    function csvEscape(s){
+      const v = String(s ?? "");
+      if (/[",\n]/.test(v)) return `"${v.replaceAll('"','""')}"`;
+      return v;
+    }
 
-      const monto = parseFloat(document.getElementById("montoInput").value);
-      if (isNaN(monto) || monto <= 0) {
-        alert("Ingresa un monto válido.");
-        return;
-      }
-      const descripcion = document.getElementById("descripcionInput").value.trim();
-      const folio = document.getElementById("folioInput").value.trim();
-      const cuenta = document.getElementById("cuentaInput").value.trim();
-      const fileInput = document.getElementById("imageInput");
-      const now = new Date();
+    function escapeHtml(str){
+      return String(str).replace(/[&<>"']/g, (m)=>({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+      }[m]));
+    }
 
-      const baseRecord = {
-        id: Date.now()+"_"+Math.random().toString(16).slice(2),
-        persona: currentTab,
-        amount: monto,
-        descripcion,
-        folio,
-        cuenta,
-        year: now.getFullYear(),
-        month: now.getMonth()+1,
-        imageDataUrl: null,
-        createdAt: now.toISOString()
-      };
-
-      const finish = () => {
-        records.push(baseRecord);
-        saveToStorage();
-        document.getElementById("formFicha").reset();
-        render();
-      };
-
-      if (fileInput.files && fileInput.files.length>0) {
-        const reader = new FileReader();
-        reader.onload = ev => {
-          baseRecord.imageDataUrl = ev.target.result;
-          finish();
-        };
-        reader.readAsDataURL(fileInput.files[0]);
-      } else {
-        finish();
-      }
+    // ------------------------
+    // Refresh
+    // ------------------------
+    $("btnRefresh").addEventListener("click", async ()=>{
+      await fetchAll();
+      toast("Actualizado ✅");
     });
 
-    // init
-    loadFromStorage();
-    buildFilters();
-    render();
+    // ------------------------
+    // Init
+    // ------------------------
+    (function init(){
+      // default month pickers
+      const cm = currentMonthStr();
+      $("globalMonth").value = "";            // start with "Todo"
+      $("calendarMonth").value = cm;
+      calendarMonth = cm;
+
+      setTab("dashboard");
+      fetchAll();
+    })();
   </script>
 </body>
 </html>
